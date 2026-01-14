@@ -1,16 +1,24 @@
-import '@/assets/styles/globals.css';
+'use client'; 
 
-export const metadata = {
-    title: "Proxim - Discover nearby EI staffing opportunities",
-    keywords: "EI, EI staffing, find EI staffing"
-}
+import React from 'react';
+import '@/assets/styles/globals.css';
+import { SessionProvider } from "next-auth/react";
+
+import Navbar from '../components/Navigation/Navbar';
+import Footer from '../components/Navigation/Footer';
 
 export default function MainLayout({ children }) {
     return (
         <html lang="en">
-                <body>
-                    {children}
-                </body>
+            <body className="h-screen flex flex-col">
+                <SessionProvider>
+                    <Navbar />
+                    <main className="flex-1 overflow-hidden">
+                        {children}
+                    </main>
+                    <Footer />
+                </SessionProvider>
+            </body>
         </html>
     )
 }
