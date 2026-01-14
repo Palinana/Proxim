@@ -9,7 +9,6 @@ import logo from '@/assets/images/logo.png';
 const Navbar = () => {
     const { data: session } = useSession();
     const role = session?.user?.role || "public";
-    const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
         <header className="border-b px-6 md:px-8 h-14 flex items-center bg-background">
