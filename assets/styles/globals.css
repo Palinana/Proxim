@@ -19,6 +19,7 @@
     --color-surface: #FFFFFF; 
   
     --color-text-primary: #6b727f;
+    --color-text-primary-hover: #3f525b;
     --color-text-secondary: #165B7F;
   
     --color-border: #e2e8f0;
@@ -49,7 +50,7 @@ body {
     color: var(--color-text-primary);
   }
   .text-primary-hover:hover {
-    color: var(--color-primary-hover);
+    color: var(--color-text-primary-hover);
   }
   .text-secondary {
     color: var(--color-text-secondary);
