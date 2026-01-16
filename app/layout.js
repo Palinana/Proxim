@@ -10,7 +10,7 @@ import Footer from '../components/Navigation/Footer';
 export default function MainLayout({ children }) {
     return (
         <html lang="en">
-            <body className="h-screen flex flex-col">
+            <body className="h-screen flex flex-col bg-app">
                 <SessionProvider>
                     <Navbar />
                     <main className="flex-1 overflow-hidden">
