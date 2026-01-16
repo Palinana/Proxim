@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { HiMenu, HiX } from "react-icons/hi"; // hamburger icons
+import { AiOutlineHome, AiOutlineStar, AiOutlineTeam, AiOutlineFileText } from "react-icons/ai";
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -13,12 +14,14 @@ const Navbar = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const links = [
-        { label: "Dashboard", href: "/" },
-        ...(role === "public" || role === "user" ? [{ label: "Saved", href: "/saved" }] : []),
-        ...(role === "admin" ? [{ label: "My Staffing", href: "/admin" }] : []),
+        { label: "Dashboard", href: "/", icon: <AiOutlineHome className="inline-block mr-1" /> },
+        ...(role === "public" || role === "user" ? [
+            { label: "Saved", href: "/saved", icon: <AiOutlineStar className="inline-block mr-1" /> }
+        ] : []),
+        ...(role === "admin" ? [{ label: "My Staffing", href: "/admin", icon: <AiOutlineTeam className="inline-block mr-1" /> }] : []),
         ...(role === "superadmin" ? [
-            { label: "All Staffings", href: "/superadmin" },
-            { label: "My Staffing", href: "/admin" },
+            { label: "All Staffings", href: "/superadmin", icon: <AiOutlineFileText className="inline-block mr-1" /> },
+            { label: "My Staffing", href: "/admin", icon: <AiOutlineTeam className="inline-block mr-1" /> },
         ] : []),
     ];
 
@@ -35,8 +38,9 @@ const Navbar = () => {
                 {/* Desktop Links immediately after logo */}
                 <nav className="hidden md:flex ml-8 space-x-8">
                     {links.map((link) => (
-                        <Link key={link.href} href={link.href} className="text-primary text-primary-hover:hover">
-                        {link.label}
+                        <Link key={link.href} href={link.href} className="flex items-center text-primary text-primary-hover">
+                            {link.icon}
+                            <span>{link.label}</span>
                         </Link>
                     ))}
                 </nav>
