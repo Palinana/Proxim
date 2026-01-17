@@ -4,6 +4,7 @@ import FilterBar from '../components/Filter/FilterBar';
 import ListingsPanel from '../components/Listings/ListingsPanel';
 
 const Dashboard = () => {
+
     return (
          <div className="flex flex-col h-full">
             {/* 1. Filter Bar */}
