@@ -1,16 +1,24 @@
 [
 	{
+		
+		"caseId": "105109",
 		"serviceType": "OT",
 		"status": "open",
-		"visits": "2",
-		"duration": "30",
-		"frequency": "weekly",
-		"geohash": "dr5ru7",
-		"location": "329 Norway Ave, Staten Island, NY, 10305",
+		"workload": { 
+			"visits": 2, 
+			"duration": 30, 
+			"frequency": "weekly" 
+		},
 		"preferredSchedule": ["afternoon"],
-		"geolocation": {
-			"lat": "41.205590",
-			"lng": "-73.150530"
+		"location": {
+			"geohash": "dr5ru7",
+			"city": "Staten Island",
+            "state": "NY",
+            "zipcode": "10305",
+			"coordinates": {
+				"lat": 41.20559,
+  				"lng": -73.15053
+			}
 		},
 		"coordinator": {
 			"_id": "65f9a1e49p2384p9",
@@ -19,6 +27,7 @@
 			"email": "jane@agency.org",
 			"role": "admin"
 			},
-		"createdAt": "2025-02-07T19:39:38.542+00:00"
+		"createdAt": "2025-02-07T19:39:38.542+00:00",
+		"updatedAt": "2025-02-07T19:39:38.542Z"
 	}
-	]
+]
