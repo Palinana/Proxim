@@ -1,4 +1,3 @@
-// import React from 'react'
 import MapContainer from '../components/Map/MapContainer';
 import FilterBar from '../components/Filter/FilterBar';
 import StaffingPanel from '../components/Staffing/StaffingPanel';

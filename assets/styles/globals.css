@@ -43,6 +43,7 @@ body {
   /* Borders */
   .border-default {
     border-color: var(--color-border);
+    box-shadow: none !important;
   }
   
   /* Text colors */
