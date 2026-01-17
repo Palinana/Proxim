@@ -2,6 +2,11 @@ import { Schema, model, models } from 'mongoose';
 
 const StaffingSchema = new Schema(
     {
+        caseId: {
+            type: String,
+            required: true,
+            unique: true
+        },
         serviceType: {
             type: String,
             enum: ["OT", "PT", "ST", "ABA", "SI"],
@@ -20,7 +25,7 @@ const StaffingSchema = new Schema(
                 required: true,
                 min: 1,
             },
-            durationMinutes: {
+            duration: {
                 type: Number,
                 enum: [30, 60],
                 required: true,
