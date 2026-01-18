@@ -34,14 +34,15 @@ export default function StaffingPanelHeader({ total }) {
 
                 <button
                     onClick={toggleSort}
-                    className={`w-10 h-6 rounded-full p-1 transition-all ${
+                    className={`w-10 h-6 rounded-full flex items-center transition-all border border-gray-300
+                    ${
                         isRecent ? "bg-primary" : "bg-gray-300"
                     }`}
                     aria-label="Toggle sort"
                 >
                 <span
                     className={`block w-4 h-4 rounded-full bg-white shadow-md transform transition-transform ${
-                        isRecent ? "translate-x-4" : "translate-x-0"
+                        isRecent ? "translate-x-4" : "translate-x-1"
                     }`}
                 />
                 </button>

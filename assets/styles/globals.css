@@ -36,8 +36,13 @@ body {
     .bg-app {
         background-color: var(--color-bg);
     }
+
     .bg-surface {
         background-color: var(--color-surface);
+    }
+
+    .bg-primary {
+        background-color: var(--color-primary);
     }
 
     .bg-staffing-card {
