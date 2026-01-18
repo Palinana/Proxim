@@ -1,6 +1,5 @@
 [
 	{
-		
 		"caseId": "105109",
 		"serviceType": "OT",
 		"status": "open",
@@ -29,5 +28,65 @@
 			},
 		"createdAt": "2025-02-07T19:39:38.542+00:00",
 		"updatedAt": "2025-02-07T19:39:38.542Z"
+	},
+	{
+		"caseId": "998084",
+		"serviceType": "PT",
+		"status": "open",
+		"workload": { 
+			"visits": 2, 
+			"duration": 30, 
+			"frequency": "weekly" 
+		},
+		"preferredSchedule": [],
+		"location": {
+			"geohash": "dr5ru7",
+			"city": "Staten Island",
+            "state": "NY",
+            "zipcode": "10307",
+			"coordinates": {
+				"lat": 42.30559,
+  				"lng": -75.95053
+			}
+		},
+		"coordinator": {
+			"_id": "65f9a1e49p2384p9",
+			"name": "Jane Doe",
+			"phone": "+13475551234",
+			"email": "jane@agency.org",
+			"role": "admin"
+			},
+		"createdAt": "2025-02-07T20:30:38.542+00:00",
+		"updatedAt": "2025-02-07T20:30:38.542Z"
+	},
+	{
+		"caseId": "1029388",
+		"serviceType": "ABA",
+		"status": "open",
+		"workload": { 
+			"visits": 5, 
+			"duration": 60, 
+			"frequency": "weekly" 
+		},
+		"preferredSchedule": ["afternoon, morning"],
+		"location": {
+			"geohash": "dr5ru7",
+			"city": "Staten Island",
+            "state": "NY",
+            "zipcode": "10306",
+			"coordinates": {
+				"lat": 41.42549,
+  				"lng": -72.24553
+			}
+		},
+		"coordinator": {
+			"_id": "65f9a1e49p2384p9",
+			"name": "Jane Doe",
+			"phone": "+13475551234",
+			"email": "jane@agency.org",
+			"role": "admin"
+			},
+		"createdAt": "2025-02-02T19:39:38.542+00:00",
+		"updatedAt": "2025-02-02T19:39:38.542Z"
 	}
 ]

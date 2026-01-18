@@ -1,9 +1,9 @@
-// import React from 'react'
 import MapContainer from '../components/Map/MapContainer';
 import FilterBar from '../components/Filter/FilterBar';
 import StaffingPanel from '../components/Staffing/StaffingPanel';
 
-const Dashboard = () => {
+const Dashboard = async ({searchParams}) => {
+    const sp = await searchParams;
 
     return (
          <div className="flex flex-col h-full">
@@ -16,8 +16,8 @@ const Dashboard = () => {
             <div className="flex flex-1 overflow-hidden bg-card ">
 
                 {/* Staffings (desktop only) */}
-                <aside className="hidden md:block w-[420px] lg:w-[480px] bg-surface border-r border-default overflow-y-auto px-6 md:px-8">
-                    <StaffingPanel />
+                <aside className="hidden md:block w-[420px] lg:w-[480px] border-r border-default overflow-y-auto pl-6 md:pl-8 pr-0">
+                    <StaffingPanel searchParams={sp} />
                 </aside>
 
                 {/* Map */}
