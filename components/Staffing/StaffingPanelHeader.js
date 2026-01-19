@@ -27,7 +27,7 @@ export default function StaffingPanelHeader({ total }) {
 
     return (
         <div className="flex items-center justify-between w-full px-4 py-5">
-            <div className="text-sm font-semibold">Staffings: {total}</div>
+            <div className="text-sm text-primary text-primary-hover font-semibold">Total Staffing: {total}</div>
 
             <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-500">Newest</span>
