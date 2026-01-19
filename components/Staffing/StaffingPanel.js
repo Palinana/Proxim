@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 
 const StaffingPanel = async ({ searchParams }) => {
     await connectDB();
-  
-    const sort = searchParams?.sort === "old" ? 1 : -1;
+    const params = await searchParams;   // <-- unwrap it
+    const sort = params?.sort === "old" ? 1 : -1;
   
     const staffings = await Staffing.find({})
       .sort({ createdAt: sort })

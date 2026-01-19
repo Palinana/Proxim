@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 import { HiMenu, HiX } from "react-icons/hi"; // hamburger icons
-import { AiOutlineHome, AiOutlineStar, AiOutlineTeam, AiOutlineFileText } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineStar, AiOutlineTeam, AiOutlineFileText, AiOutlineLineChart } from "react-icons/ai";
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -22,11 +22,11 @@ const Navbar = () => {
         ...(role === "admin" ? [{ label: "My Staffing", href: "/admin", icon: <AiOutlineTeam className="inline-block mr-1" /> }] : []),
         ...(role === "superadmin" ? [
             { label: "All Staffings", href: "/superadmin", icon: <AiOutlineFileText className="inline-block mr-1" /> },
-            { label: "My Staffing", href: "/admin", icon: <AiOutlineTeam className="inline-block mr-1" /> },
+            { label: "Insights", href: "/insights", icon: <AiOutlineLineChart className="inline-block mr-1" /> },
         ] : []),
     ];
 
-    const needsPhone = !!session && ["admin", "superadmin"].includes(session.user.role) && !session.user.phone;
+    const needsPhone = !!session && ["admin"].includes(session.user.role) && !session.user.phone;
   
     console.log("session.user ", session)
     console.log("needsPhone ", needsPhone)
@@ -116,7 +116,7 @@ const Navbar = () => {
                 <div className="absolute top-14 left-0 w-full bg-white border-t md:hidden shadow-lg z-50">
                     <nav className="flex flex-col space-y-2 px-4 py-3">
                         {links.map((link) => (
-                            <Link key={link.href} href={link.href} className="hover:text-blue-600">
+                            <Link key={link.href} href={link.href} className="text-primary text-primary-hover">
                                 {link.label}
                             </Link>
                         ))}
