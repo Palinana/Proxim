@@ -1,6 +1,7 @@
 import MapContainer from '../components/Map/MapContainer';
 import FilterBar from '../components/Filter/FilterBar';
 import StaffingPanel from '../components/Staffing/StaffingPanel';
+import MobileStaffingToggle from "@/components/Staffing/MobileStaffingToggle";
 
 const Dashboard = async ({searchParams}) => {
     const sp = await searchParams;
@@ -24,10 +25,10 @@ const Dashboard = async ({searchParams}) => {
                 <section className="flex-1 relative bg-surface">
                     <MapContainer />
 
-                    {/* Mobile Staffings Button */}
-                    <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
-                        StaffingsPanelSheetTrigger
-                    </div>
+                    {/* Mobile Staffings toggle Button */}
+                    <MobileStaffingToggle>
+                        <StaffingPanel searchParams={searchParams} />
+                    </MobileStaffingToggle>
                 </section>
             </div>
         </div>

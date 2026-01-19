@@ -1,4 +1,5 @@
 import { Schema, model, models } from 'mongoose';
+import { type } from 'os';
 
 const UserSchema = new Schema(
     {
@@ -17,6 +18,7 @@ const UserSchema = new Schema(
         },
         phone: {
             type: String,
+            default: null,
             trim: true,
             // optional validation (recommended)
             match: [/^\+?[1-9]\d{1,14}$/, "Invalid phone number"],
@@ -32,7 +34,11 @@ const UserSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'Staffing',
             },
-        ]
+        ],
+        profile_completed: {
+            type: Boolean,
+            default: false
+        } 
     },
     { timestamps: true }
 );

@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useState, useEffect } from 'react';
+import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 import { HiMenu, HiX } from "react-icons/hi"; // hamburger icons
-import { AiOutlineHome, AiOutlineStar, AiOutlineTeam, AiOutlineFileText } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineStar, AiOutlineTeam, AiOutlineFileText, AiOutlineLineChart } from "react-icons/ai";
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -11,6 +11,7 @@ import logo from '@/assets/images/logo.png';
 const Navbar = () => {
     const { data: session } = useSession();
     const role = session?.user?.role || "public";
+    const [providers, setProviders] = useState(null);
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const links = [
@@ -21,9 +22,23 @@ const Navbar = () => {
         ...(role === "admin" ? [{ label: "My Staffing", href: "/admin", icon: <AiOutlineTeam className="inline-block mr-1" /> }] : []),
         ...(role === "superadmin" ? [
             { label: "All Staffings", href: "/superadmin", icon: <AiOutlineFileText className="inline-block mr-1" /> },
-            { label: "My Staffing", href: "/admin", icon: <AiOutlineTeam className="inline-block mr-1" /> },
+            { label: "Insights", href: "/insights", icon: <AiOutlineLineChart className="inline-block mr-1" /> },
         ] : []),
     ];
+
+    const needsPhone = !!session && ["admin"].includes(session.user.role) && !session.user.phone;
+  
+    console.log("session.user ", session)
+    console.log("needsPhone ", needsPhone)
+
+    useEffect(() => {
+        const setAuthProviders = async () => {
+            const res = await getProviders();
+            setProviders(res);
+        };
+
+        setAuthProviders();
+    }, []);
 
     return (
         <header className="bg-surface border-b border border-gray-200 text-text-primary px-6 md:px-8 py-3 flex items-center justify-between h-14 relative">
@@ -46,21 +61,42 @@ const Navbar = () => {
                 </nav>
             </div>
 
-            {/* Right: Auth Buttons & Mobile Hamburger */}
-            <div className="flex items-center space-x-2">
+           {/* Right: Profile notice + Auth + Mobile */}
+            <div className="flex items-center space-x-3">
+                {needsPhone && (
+                    <>
+                        <Link
+                            href="/profile"
+                            className="hidden md:inline-flex items-center text-sm font-medium text-gray-500  underline-offset-2 hover:underline hover:text-gray-600 bg-yellow-100 px-2 py-1 rounded"
+                        >
+                            Finish your profile - add your phone number
+                        </Link>
+
+                        <span className="hidden md:inline px-3 text-gray-400 text-xl">
+                            |
+                        </span>
+                    </>
+                )}
+
                 {!session && (
-                    <button
-                        className="hidden md:inline px-3 py-1 rounded btn-primary"
-                        onClick={() => signIn("google")}
-                    >
-                        Sign In
-                    </button>
+                    providers &&
+                    Object.values(providers).map((provider, index) => (
+                        <button
+                            onClick={() => signIn(provider.id)}
+                            key={index}
+                            className="hidden md:inline px-3 py-1 rounded btn-primary"
+                        >
+                            Sign In
+                        </button>
+                    ))
                 )}
 
                 {session && (
                     <button
                         className="hidden md:inline px-3 py-1 rounded border hover:bg-gray-100"
-                        onClick={() => signOut()}
+                        onClick={() =>
+                            signOut({ callbackUrl: "http://localhost:3001" })
+                        }
                     >
                         Log Out
                     </button>
@@ -68,8 +104,8 @@ const Navbar = () => {
 
                 {/* Mobile hamburger */}
                 <button
-                className="md:hidden p-2"
-                onClick={() => setMobileOpen(!mobileOpen)}
+                    className="md:hidden p-2"
+                    onClick={() => setMobileOpen(!mobileOpen)}
                 >
                     {mobileOpen ? <HiX size={24} /> : <HiMenu size={24} />}
                 </button>
@@ -80,22 +116,41 @@ const Navbar = () => {
                 <div className="absolute top-14 left-0 w-full bg-white border-t md:hidden shadow-lg z-50">
                     <nav className="flex flex-col space-y-2 px-4 py-3">
                         {links.map((link) => (
-                            <Link key={link.href} href={link.href} className="hover:text-blue-600">
+                            <Link key={link.href} href={link.href} className="text-primary text-primary-hover">
                                 {link.label}
                             </Link>
                         ))}
-                        {!session && (
-                            <button
-                                className="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
-                                onClick={() => signIn("google")}
+
+                        {needsPhone && (
+                        <div className="md:hidden w-full">
+                            <Link
+                            href="/profile"
+                            className="block w-full text-center text-sm font-medium text-gray-500 underline-offset-2 hover:underline hover:text-gray-600 bg-yellow-100 px-3 py-2 rounded"
+
                             >
-                                Sign In
-                            </button>
+                            Finish your profile - add your phone number
+                            </Link>
+                        </div>
+                        )}
+
+                        {!session && (
+                            providers &&
+                            Object.values(providers).map((provider, index) => (
+                                <button
+                                    onClick={() => signIn(provider.id)}
+                                    key={index}
+                                    className='px-3 py-1 rounded btn-primary text-white hover:bg-blue-700'
+                                >
+                                    Sign In
+                                </button>
+                            ))
                         )}
                         {session && (
                             <button
                                 className="px-3 py-1 rounded border hover:bg-gray-100"
-                                onClick={() => signOut()}
+                                onClick={() => signOut({
+                                    callbackUrl: 'http://localhost:3001', 
+                                })}
                             >
                                 Log Out
                             </button>
