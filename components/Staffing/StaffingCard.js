@@ -3,11 +3,11 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 function getServiceColor(type) {
     switch (type) {
-        case "OT": return "bg-blue-500";
-        case "PT": return "bg-green-500";
-        case "ST": return "bg-red-500";
-        case "SI": return "bg-pink-500";
-        case "ABA": return "bg-yellow-500";
+        case "OT": return "bg-service-OT";
+        case "PT": return "bg-service-PT";
+        case "ST": return "bg-service-ST";
+        case "SI": return "bg-service-SI";
+        case "ABA": return "bg-service-ABA";
         default: return "bg-gray-400";
     }
 }
@@ -27,7 +27,7 @@ export default function StaffingCard({ staffing }) {
         <Card className="w-full border-default bg-staffing-card">
             <CardHeader className="flex items-start justify-between py-3 px-4">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                    <span className={`h-2 w-2 rounded-full ${getServiceColor(serviceType)}`} />
+                    <span className={`h-3 w-3 rounded-full ${getServiceColor(serviceType)}`} />
                     {serviceType} {workloadText}
                 </CardTitle>
             </CardHeader>
@@ -40,7 +40,7 @@ export default function StaffingCard({ staffing }) {
                     <strong>Location:</strong> {location.city}, {location.state} {location.zipcode}
                 </div>
                 <div>
-                    <strong>Preferred:</strong>{" "}
+                    <strong>Preferred Schedule:</strong>{" "}
                     {preferredSchedule?.length ? preferredSchedule.join(", ") : "Any"}
                 </div>
 

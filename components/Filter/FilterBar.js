@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import MultiCheckboxDropdown from "./MultiSelectPopover";
 import MultiSelectPopover from "./MultiSelectPopover";
 
 export default function FilterBar() {
@@ -36,7 +35,7 @@ export default function FilterBar() {
             value={searchParams.get("service") || ""}
             onValueChange={(v) => setParam("service", v)}
         >
-            <SelectTrigger className="bg-white w-[180px] border border-gray-300">
+            <SelectTrigger className="bg-white text-secondary-2 w-[180px] border border-gray-300">
                 <SelectValue placeholder="Service" />
             </SelectTrigger>
         
@@ -53,8 +52,8 @@ export default function FilterBar() {
             value={searchParams.get("status") || ""}
             onValueChange={(v) => setParam("status", v)}
         >
-            <SelectTrigger className="w-36 bg-white border border-gray-300">
-                <SelectValue placeholder="Status" />
+            <SelectTrigger className="w-36 bg-white text-secondary-2 border border-gray-300">
+                <SelectValue className="font-bold" placeholder="Status" />
             </SelectTrigger>
             <SelectContent className="bg-white border border-gray-200">
                 <SelectItem value="open" className="bg-white hover:bg-gray-50">Open</SelectItem>
@@ -82,7 +81,7 @@ export default function FilterBar() {
             value={searchParams.get("borough") || ""}
             onValueChange={(v) => setParam("borough", v)}
         >
-        <SelectTrigger className="w-44 bg-white border border-gray-300">
+        <SelectTrigger className="w-44 bg-white text-secondary-2 border border-gray-300">
             <SelectValue placeholder="Borough" />
         </SelectTrigger>
         <SelectContent className="bg-white border border-gray-200">
@@ -110,13 +109,36 @@ export default function FilterBar() {
             onChange={(vals) => setMultiParam("zip", vals)}
         />
 
-        {/* Clear */}
-        <button
-            onClick={() => router.push("/")}
-            className="px-3 py-2 text-sm border rounded bg-white border border-blue-300 hover:bg-gray-100"
-        >
-            Clear filters
-        </button>
+        <div className="flex items-center">
+            <button
+                onClick={() => router.push("/")}
+                className="text-sm text-secondary-2 hover:underline !font-bold"
+            >
+                Clear filters
+            </button>
+
+            {/* Divider */}
+            <span className="mx-3 h-4 w-px bg-gray-300" />
+
+            <button
+                onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert("Link copied to clipboard");
+                }}
+                className="
+                px-3 py-1.5
+                text-sm font-medium
+                text-green-600
+                border border-green-600
+                rounded
+                hover:bg-green-600
+                hover:text-white
+                transition
+                "
+            >
+                Share
+            </button>
+        </div>
     </div>
   );
 }

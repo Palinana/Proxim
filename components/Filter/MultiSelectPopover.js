@@ -8,12 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export default function MultiSelectPopover({
-  label,
-  options,
-  value = [],
-  onChange,
-}) {
+export default function MultiSelectPopover({ label, options, value = [], onChange }) {
     const toggle = (val) => {
         if (value.includes(val)) onChange(value.filter((v) => v !== val));
         else onChange([...value, val]);
@@ -22,7 +17,7 @@ export default function MultiSelectPopover({
     return (
         <Popover>
             <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-48 bg-white justify-between border border-gray-300">
+                  <Button variant="outline" className="w-48 bg-white font-normal text-secondary-2 text-secondary-2-hover:hover justify-between border border-gray-300">
                     {value.length ? value.join(", ") : label}
                   </Button>
             </PopoverTrigger>
