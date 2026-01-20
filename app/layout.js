@@ -12,13 +12,13 @@ export default function MainLayout({ children }) {
         <html lang="en">
             <body className="h-screen flex flex-col bg-app">
                 <SessionProvider>
-                    <AuthProvider>
-                        <Navbar />
-                        <main className="flex-1 overflow-hidden">
-                            {children}
-                        </main>
-                        <Footer />
-                    </AuthProvider>
+                        <AuthProvider>
+                            <Navbar />
+                            <main className="flex-1 overflow-hidden">
+                                {children}
+                            </main>
+                            <Footer />
+                        </AuthProvider>
                 </SessionProvider>
             </body>
         </html>
