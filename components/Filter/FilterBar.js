@@ -5,13 +5,10 @@ import { useSession } from "next-auth/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import MultiSelectPopover from "./MultiSelectPopover";
 
-export default function FilterBar({ coordinators }) {
+export default function FilterBar({ coordinators, role, userId }) {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { data: session } = useSession();
-
-    const role = session?.user?.role || "public";
-    const showCoordinatorFilter = role !== "admin";
+    const showCoordinatorFilter = role === "admin";
 
     const setParam = (key, value) => {
         const params = new URLSearchParams(searchParams);
@@ -131,19 +128,17 @@ export default function FilterBar({ coordinators }) {
 
                 <button
                     onClick={() => {
-                        navigator.clipboard.writeText(window.location.href);
+                        const params = new URLSearchParams(searchParams);
+
+                        if (role === "admin" && userId) {
+                        params.set("coordinator", userId);
+                        }
+
+                        const shareUrl = `${window.location.origin}/?${params.toString()}`;
+                        navigator.clipboard.writeText(shareUrl);
                         alert("Link copied to clipboard");
                     }}
-                    className="
-                    px-3 py-1.5
-                    text-sm font-medium
-                    text-green-600
-                    border border-green-600
-                    rounded
-                    hover:bg-green-600
-                    hover:text-white
-                    transition
-                    "
+                    className="px-3 py-1.5 text-sm font-medium text-green-600 border border-green-600 rounded hover:bg-green-600 hover:text-white transition"
                 >
                     Share
                 </button>

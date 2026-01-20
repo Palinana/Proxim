@@ -76,7 +76,7 @@ const Dashboard = async ({ searchParams }) => {
     return (
         <div className="flex flex-col h-full">
             <div className="border-b bg-background px-6 md:px-8 py-3">
-                <FilterBar coordinators={coordinatorOptions}/>
+                <FilterBar coordinators={coordinatorOptions} role={role} userId={userId}/>
             </div>
 
             <div className="flex flex-1 overflow-hidden bg-card">
