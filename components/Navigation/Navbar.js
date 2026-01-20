@@ -27,9 +27,6 @@ const Navbar = () => {
     ];
 
     const needsPhone = !!session && ["admin"].includes(session.user.role) && !session.user.phone;
-  
-    console.log("session.user ", session)
-    console.log("needsPhone ", needsPhone)
 
     useEffect(() => {
         const setAuthProviders = async () => {

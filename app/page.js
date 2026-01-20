@@ -1,5 +1,6 @@
 import connectDB from "@/config/database";
 import Staffing from "@/models/Staffing";
+import User from "@/models/User";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
 
@@ -19,14 +20,19 @@ const Dashboard = async ({ searchParams }) => {
 
     const query = {};
 
-    // Admin sees only their own staffing
+    // ADMIN ONLY: see only their own staffings
     if (role === "admin") {
-        query.coordinator = userId;
+    query["coordinator._id"] = userId;
     }
 
-    // Public filter by admin link
+    // PUBLIC/USER/SUPERADMIN: filter by coordinator if provided
+    if (params?.coordinator) {
+    query["coordinator._id"] = params.coordinator;
+    }
+
+    // PUBLIC: share link by admin ID
     if (!role && params?.admin) {
-        query.coordinator = params.admin;
+    query["coordinator._id"] = params.admin;
     }
 
     // Filters
@@ -51,26 +57,26 @@ const Dashboard = async ({ searchParams }) => {
         query.$or = mandateQueries;
     }
 
-    // role-based visibility
-    if (role === "admin") {
-        query.coordinator = userId;
-    }
-    
-    // public share link (admin=ID)
-    if (params.admin) {
-        query.coordinator = params.admin;
-    }
-
     const sort = params?.sort === "old" ? 1 : -1;
 
+    // query for SC is just their coordiantor ID
     const staffings = await Staffing.find(query)
         .sort({ createdAt: sort })
         .lean();
+    
+    const coordinators = await User.find({ role: "admin" })
+        .select("first_name last_name _id")
+        .lean();
+
+    const coordinatorOptions = coordinators.map((c) => ({
+        label: `${c.first_name} ${c.last_name}`,
+        value: c._id.toString(),
+    }));
 
     return (
         <div className="flex flex-col h-full">
             <div className="border-b bg-background px-6 md:px-8 py-3">
-                <FilterBar />
+                <FilterBar coordinators={coordinatorOptions}/>
             </div>
 
             <div className="flex flex-1 overflow-hidden bg-card">
