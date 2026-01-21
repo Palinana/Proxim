@@ -10,6 +10,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogDescription,
+    DialogFooter
   } from "@/components/ui/dialog";
 
 export default function ProfileClient({ user }) {
@@ -19,17 +21,33 @@ export default function ProfileClient({ user }) {
 
     const initials = `${user.first_name?.[0] || ""}${user.last_name?.[0] || ""}`.toUpperCase();
 
-    const save = async () => {
-        await fetch("/api/user/update-profile", {
-          method: "POST",
-          body: JSON.stringify({ email, phone }),
-          headers: { "Content-Type": "application/json" },
-        });
+    const handleSave = async () => {
+        try {
+          const res = await fetch("/api/user", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, phone }),
+          });
     
-        setOpen(false);
-        window.location.reload();
+          if (!res.ok) throw new Error("Failed to update profile");
+    
+          setOpen(false);
+          // optional: refresh page / show toast
+        } catch (err) {
+          console.error(err);
+        }
     };
-    
+
+    const formatPhone = (value) => {
+        const digits = value.replace(/\D/g, "").slice(0, 10); // only 10 digits
+        const part1 = digits.slice(0, 3);
+        const part2 = digits.slice(3, 6);
+        const part3 = digits.slice(6, 10);
+      
+        if (!part2) return part1;
+        if (!part3) return `(${part1}) ${part2}`;
+        return `(${part1}) ${part2}-${part3}`;
+    };
 
     return (
         <div className="flex flex-col h-full bg-gray-50">
@@ -62,7 +80,7 @@ export default function ProfileClient({ user }) {
                     <div className="mt-8 border border-gray-200 bg-staffing-card rounded-xl p-6 relative">
                         <button
                             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-                            onClick={() => setEditing(!editing)}
+                            onClick={() => setOpen(true)}
                         >
                         <HiOutlinePencil />
                         </button>
@@ -79,47 +97,55 @@ export default function ProfileClient({ user }) {
                         <div className="flex items-center gap-3">
                             <HiOutlinePhone className="text-gray-500" />
 
-                            {editing ? (
-                            <Input
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                placeholder="Add phone number"
-                                className="max-w-xs"
-                            />
-                            ) : user.phone ? (
-                                <span className="text-gray-700">
-                                    {user.phone}
-                                </span>
+                            {user.phone ? (
+                                <span className="text-gray-700">{user.phone}</span>
                             ) : (
                                 <span className="px-2 py-1 rounded-md bg-yellow-100 text-gray-500 text-sm font-medium">
-                                    Phone is not set
+                                Phone is not set
                                 </span>
                             )}
                         </div>
+                    </div>
 
-                        {editing && (
-                            <div className="mt-4 flex gap-3">
-                                <Button
-                                onClick={() => {
-                                    // TODO: save phone to DB
-                                    setEditing(false);
-                                }}
-                                >
-                                    Save
-                                </Button>
+                    {/* EDIT POPUP */}
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogContent className="bg-white shadow-lg rounded-2xl max-w-lg">
+                            <DialogHeader>
+                                <DialogTitle>Edit Contact Info</DialogTitle>
+                                <DialogDescription>
+                                    Update your email and phone number.
+                                </DialogDescription>
+                            </DialogHeader>
 
-                                <Button
-                                variant="outline"
-                                onClick={() => {
-                                    setPhone(user.phone || "");
-                                    setEditing(false);
-                                }}
-                                >
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="text-sm font-medium text-gray-700">Email</label>
+                                    <Input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="mt-1 w-full focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="text-sm font-medium text-gray-700">Phone</label>
+                                    <Input
+                                        value={phone}
+                                        onChange={(e) => setPhone(formatPhone(e.target.value))}
+                                        placeholder="(123) 456-7890"
+                                        className="mt-1 w-full focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
+                                    />
+                                </div>
+                            </div>
+
+                            <DialogFooter className="mt-4">
+                                <Button variant="outline" onClick={() => setOpen(false)}>
                                     Cancel
                                 </Button>
-                            </div>
-                        )}
-                    </div>
+                                <Button onClick={handleSave}>Save</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
         </div>
