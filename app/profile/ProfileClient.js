@@ -9,35 +9,25 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
     DialogDescription,
     DialogFooter
   } from "@/components/ui/dialog";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { updateProfile } from "../api/actions/updateProfile";
 
 export default function ProfileClient({ user }) {
+    const [firstName, setFirstName] = useState(user.first_name || "");
+    const [lastName, setLastName] = useState(user.last_name || "");
     const [email, setEmail] = useState(user.email || "");
     const [phone, setPhone] = useState(user.phone || "");
     const [open, setOpen] = useState(false);
+    const [isPending, startTransition] = useTransition();
+
+    const router = useRouter();
 
     const initials = `${user.first_name?.[0] || ""}${user.last_name?.[0] || ""}`.toUpperCase();
-
-    const handleSave = async () => {
-        try {
-          const res = await fetch("/api/user", {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, phone }),
-          });
-    
-          if (!res.ok) throw new Error("Failed to update profile");
-    
-          setOpen(false);
-          // optional: refresh page / show toast
-        } catch (err) {
-          console.error(err);
-        }
-    };
-
+ 
     const formatPhone = (value) => {
         const digits = value.replace(/\D/g, "").slice(0, 10); // only 10 digits
         const part1 = digits.slice(0, 3);
@@ -113,37 +103,70 @@ export default function ProfileClient({ user }) {
                             <DialogHeader>
                                 <DialogTitle>Edit Contact Info</DialogTitle>
                                 <DialogDescription>
-                                    Update your email and phone number.
+                                    Update your profile information.
                                 </DialogDescription>
                             </DialogHeader>
 
-                            <div className="space-y-4">
+                            <form
+                                action={(formData) => {
+                                    startTransition(async () => {
+                                    await updateProfile(formData);
+                                    router.refresh(); 
+                                    setOpen(false); // close modal after save
+                                    });
+                                }}
+                                className="space-y-4"
+                            >
+                                {/* First Name */}
                                 <div>
-                                    <label className="text-sm font-medium text-gray-700">Email</label>
+                                    <label className="text-sm font-medium">First Name</label>
                                     <Input
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="mt-1 w-full focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
+                                    name="first_name"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
                                     />
                                 </div>
 
+                                {/* Last Name */}
                                 <div>
-                                    <label className="text-sm font-medium text-gray-700">Phone</label>
+                                    <label className="text-sm font-medium">Last Name</label>
                                     <Input
-                                        value={phone}
-                                        onChange={(e) => setPhone(formatPhone(e.target.value))}
-                                        placeholder="(123) 456-7890"
-                                        className="mt-1 w-full focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
+                                    name="last_name"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
                                     />
                                 </div>
-                            </div>
 
-                            <DialogFooter className="mt-4">
-                                <Button variant="outline" onClick={() => setOpen(false)}>
-                                    Cancel
-                                </Button>
-                                <Button onClick={handleSave}>Save</Button>
-                            </DialogFooter>
+                                {/* Email */}
+                                <div>
+                                    <label className="text-sm font-medium">Email</label>
+                                    <Input
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* Phone */}
+                                <div>
+                                    <label className="text-sm font-medium">Phone</label>
+                                    <Input
+                                    name="phone"
+                                    value={phone}
+                                    onChange={(e) => setPhone(formatPhone(e.target.value))}
+                                    placeholder="(123) 456-7890"
+                                    />
+                                </div>
+
+                                <DialogFooter className="pt-4">
+                                    <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                                        Cancel
+                                    </Button>
+                                    <Button type="submit" disabled={isPending}>
+                                    {   isPending ? "Saving..." : "Save"}
+                                    </Button>
+                                </DialogFooter>
+                            </form>
                         </DialogContent>
                     </Dialog>
                 </div>
