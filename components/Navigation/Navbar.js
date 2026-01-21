@@ -2,7 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 import { HiMenu, HiX } from "react-icons/hi"; // hamburger icons
-import { AiOutlineHome, AiOutlineStar, AiOutlineTeam, AiOutlineFileText, AiOutlineLineChart } from "react-icons/ai";
+import { HiOutlineUser } from "react-icons/hi";
+import { FaUserFriends } from "react-icons/fa";
+import { AiOutlineHome, AiOutlineStar, AiOutlineFileText, AiOutlineLineChart } from "react-icons/ai";
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -19,10 +21,15 @@ const Navbar = () => {
         ...(role === "public" || role === "user" ? [
             { label: "Saved", href: "/saved", icon: <AiOutlineStar className="inline-block mr-1" /> }
         ] : []),
-        ...(role === "admin" ? [{ label: "My Staffing", href: "/admin", icon: <AiOutlineTeam className="inline-block mr-1" /> }] : []),
+        ...(role === "user" ? [{ label: "Profile", href: "/profile", icon: <HiOutlineUser className="inline-block mr-1" /> }] : []),
+        ...(role === "admin" ? [
+            { label: "My Staffing", href: "/admin", icon: <FaUserFriends className="inline-block mr-1" /> },
+            { label: "Profile", href: "/profile", icon: <HiOutlineUser className="inline-block mr-1" /> }
+        ] : []),
         ...(role === "superadmin" ? [
             { label: "All Staffings", href: "/superadmin", icon: <AiOutlineFileText className="inline-block mr-1" /> },
             { label: "Insights", href: "/insights", icon: <AiOutlineLineChart className="inline-block mr-1" /> },
+            { label: "Profile", href: "/profile", icon: <HiOutlineUser className="inline-block mr-1" /> }
         ] : []),
     ];
 
