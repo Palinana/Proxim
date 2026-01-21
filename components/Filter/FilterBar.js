@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { HiOutlineShare } from "react-icons/hi";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import MultiSelectPopover from "./MultiSelectPopover";
 
@@ -138,8 +139,16 @@ export default function FilterBar({ coordinators, role, userId }) {
                         navigator.clipboard.writeText(shareUrl);
                         alert("Link copied to clipboard");
                     }}
-                    className="px-3 py-1.5 text-sm font-medium text-green-600 border border-green-600 rounded hover:bg-green-600 hover:text-white transition"
+                    className="inline-flex items-center gap-2
+                    px-3 py-1.5
+                    text-sm font-medium
+                    text-green-600
+                    border border-green-600
+                    rounded
+                    hover:bg-green-600 hover:text-white
+                    transition"
                 >
+                    <HiOutlineShare className="h-4 w-4 shrink-0" />
                     Share
                 </button>
             </div>

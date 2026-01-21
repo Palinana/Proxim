@@ -14,7 +14,7 @@ import {
   } from "@/components/ui/dialog";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateProfile } from "../api/actions/updateProfile";
+import { updateProfile } from "../actions/updateProfile";
 
 export default function ProfileClient({ user }) {
     const [firstName, setFirstName] = useState(user.first_name || "");
@@ -41,11 +41,6 @@ export default function ProfileClient({ user }) {
 
     return (
         <div className="flex flex-col h-full bg-gray-50">
-            {/* Top bar (same spacing as dashboard) */}
-            <div className="border-b bg-background px-6 md:px-8 py-3">
-                <h1 className="text-xl font-semibold">Profile</h1>
-            </div>
-
             {/* Centered card */}
             <div className="flex flex-1 justify-center py-10">
                 <div className="w-full max-w-3xl bg-white rounded-2xl p-8 shadow-sm">

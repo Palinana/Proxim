@@ -1,38 +1,31 @@
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export function middleware(req) {
+export async function middleware(req) {
     const { pathname } = req.nextUrl;
 
-    /// allow public routes
     if (pathname === "/" || pathname === "/index") {
         return NextResponse.next();
     }
 
-    // check auth cookie
-    const token =
-        req.cookies.get("next-auth.session-token")?.value ||
-        req.cookies.get("__Secure-next-auth.session-token")?.value;
+    const token = await getToken({
+        req,
+        secret: process.env.NEXTAUTH_SECRET,
+    });
 
     if (!token) {
         return NextResponse.redirect(new URL("/", req.url));
     }
 
-    // if not logged in, redirect to home
-    if (!token) {
-        return NextResponse.redirect(new URL("/", req.url));
-    }
+    const role = token.role;
+    
 
-    // role cookie (set from your app after login)
-    const role = req.cookies.get("role")?.value;
-
-    // Admin routes
     if (pathname.startsWith("/admin")) {
         if (role !== "admin" && role !== "superadmin") {
             return NextResponse.redirect(new URL("/", req.url));
         }
     }
 
-    // Superadmin routes
     if (pathname.startsWith("/superadmin")) {
         if (role !== "superadmin") {
             return NextResponse.redirect(new URL("/", req.url));
@@ -43,7 +36,5 @@ export function middleware(req) {
 }
 
 export const config = {
-    matcher: [
-      "/((?!_next/static|_next/image|favicon.ico|api/auth).*)",
-    ],
+    matcher: ["/((?!_next/static|_next/image|favicon.ico|api/auth).*)"],
 };

@@ -1,52 +1,56 @@
-import GoogleProvider from 'next-auth/providers/google';
-
-import User from '../models/User';
-import connectDB from '../config/database';
+import GoogleProvider from "next-auth/providers/google";
+import User from "../models/User";
+import connectDB from "../config/database";
 
 export const authOptions = {
-    // Configure one or more authentication providers
+    session: { strategy: "jwt" },
+
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            authorization: {
-                params: {
-                    prompt: 'consent',
-                    access_type: 'offline',
-                    response_type: 'code',
-                },
-            },
         }),
     ],
+
     callbacks: {
-        // Invoked on successful signin
         async signIn({ profile }) {
-            // 1. Connect to database
             await connectDB();
-            // 2. Check if user exists
+
             const userExists = await User.findOne({ email: profile.email });
-            // 3. If not, then add user to database
+
             if (!userExists) {
-                await User.create({
+                    await User.create({
                     first_name: profile.given_name,
                     last_name: profile.family_name,
                     email: profile.email,
-                    phone: profile.phone
+                    phone: profile.phone,
+                    role: "user", // default role
                 });
-        }
-            // 4. Return true to allow sign in
+            }
+
             return true;
         },
-        // Modifies the session object
-        async session({ session }) {
-            // 1. Get user from database
-            const user = await User.findOne({ email: session.user.email });
-            // 2. Assign the user id to the session
-            session.user.id = user._id.toString();
-            session.user.role = user.role;
-            session.user.phone = user.phone;
-            // 3. return session
-            return session;
+
+        // IMPORTANT: fetch user from DB here
+        async jwt({ token }) {
+            await connectDB();
+
+            const user = await User.findOne({ email: token.email });
+
+            if (user) {
+                token.id = user._id.toString();
+                token.role = user.role;
+                token.phone = user.phone;
+            }
+
+            return token;
         },
-    }
-}
+
+        async session({ session, token }) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+        session.user.phone = token.phone;
+        return session;
+        },
+    },
+};
