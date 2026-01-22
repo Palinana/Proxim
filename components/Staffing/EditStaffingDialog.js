@@ -43,6 +43,7 @@ export default function EditStaffingDialog({ staffing }) {
 
 const normalizeSchedule = (value) => {
     if (!value) return [];
+    console.log("value - ", value)
   
     // If it's a string, make it an array
     if (typeof value === "string") return [value];

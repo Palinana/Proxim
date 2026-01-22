@@ -15,7 +15,7 @@ const StaffingSchema = new Schema(
         },
         status: {
             type: String,
-            enum: ["open", "pending", "filled", "closed"],
+            enum: ["Open", "Pending", "Filled", "Closed"],
             default: "open",
             index: true,
         },
@@ -32,13 +32,13 @@ const StaffingSchema = new Schema(
             },
             frequency: {
                 type: String,
-                enum: ["weekly", "monthly"],
+                enum: ["Weekly", "Monthly"],
                 required: true,
             },
         },
         preferredSchedule: {
             type: [String],
-            enum: ["morning", "afternoon", "evening"],
+            enum: ["Morning", "Afternoon", "Evening"],
             default: [], // “No preference”
         },
         // Approximate location only (HIPAA-safe)

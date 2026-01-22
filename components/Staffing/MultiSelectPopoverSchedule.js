@@ -38,10 +38,15 @@ export default function MultiSelectPopoverSchedule({
     } else {
       // ADD it (clean + dedupe)
       const next = [...current, cleanVal]
+      console.log("next ", next)
         .map((v) => (typeof v === "string" ? v.trim() : v))
         .filter((v, idx, arr) => {
           if (typeof v !== "string") return true;
+
+          console.log("typeof v !== string ", typeof v !== "string")
+
           const lower = v.toLowerCase();
+          console.log("lower ", lower)
           return arr.findIndex((x) => typeof x === "string" && x.toLowerCase() === lower) === idx;
         });
 
