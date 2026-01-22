@@ -19,49 +19,46 @@ export default function AdminStaffingItem({ staffing }) {
 
     return (
         <Card className="w-full border-default bg-staffing-card">
-      <CardHeader className="flex flex-row items-start justify-between py-3 px-4">
-  <div className="flex-1 min-w-0 flex items-center gap-2">
-    <CardTitle className="text-base font-semibold truncate">
-      {serviceType} - {workloadText}
-    </CardTitle>
-  </div>
+            <CardHeader className="flex flex-row items-start justify-between py-3 px-4">
+                <div className="flex-1 min-w-0 flex items-center gap-2">
+                    <CardTitle className="text-base font-semibold truncate">
+                        {serviceType} - {workloadText}
+                    </CardTitle>
+                </div>
 
-  <div className="flex items-center gap-2 flex-shrink-0">
-    <EditStaffingDialog staffing={staffing} />
+                <div className="flex items-center gap-2 flex-shrink-0">
+                    <EditStaffingDialog staffing={staffing} />
 
-    <button
-      onClick={() => {
-        if (!confirm("Delete this staffing?")) return;
-        startTransition(async () => {
-          await deleteStaffing(staffing._id);
-          router.refresh();
-        });
-      }}
-      className="text-red-600 hover:text-red-800"
-    >
-      <HiOutlineTrash />
-    </button>
-  </div>
-</CardHeader>
+                    <button
+                        onClick={() => {
+                            if (!confirm("Delete this staffing?")) return;
+                            startTransition(async () => {
+                            await deleteStaffing(staffing._id);
+                            router.refresh();
+                            });
+                        }}
+                    className="text-red-600 hover:text-red-800"
+                    >
+                        <HiOutlineTrash />
+                    </button>
+                </div>
+            </CardHeader>
 
-
-      <CardContent className="pt-0 pb-3 px-4 space-y-1 text-sm">
-        <div>
-          <strong>Status:</strong> {status}
-        </div>
-        <div>
-          <strong>EI #:</strong> {caseId || "N/A"}
-        </div>
-
-        <div>
-          <strong>Location:</strong> {location?.city}, {location?.state} {location?.zipcode}
-        </div>
-
-        <div>
-          <strong>Preferred Schedule:</strong>{" "}
-          {preferredSchedule?.length ? preferredSchedule.join(", ") : "Any"}
-        </div>
-      </CardContent>
-    </Card>
+            <CardContent className="pt-0 pb-3 px-4 space-y-1 text-sm">
+                <div>
+                    <strong>Status:</strong> {status}
+                </div>
+                <div>
+                    <strong>EI #:</strong> {caseId || "N/A"}
+                </div>
+                <div>
+                    <strong>Location:</strong> {location?.city}, {location?.state} {location?.zipcode}
+                </div>
+                <div>
+                    <strong>Preferred Schedule:</strong>{" "}
+                    {preferredSchedule?.length ? preferredSchedule.join(", ") : "Any"}
+                </div>
+            </CardContent>
+        </Card>
     );
 }

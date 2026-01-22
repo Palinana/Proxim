@@ -1,87 +1,72 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export default function MultiSelectPopoverSchedule({
-  label,
-  options,
-  value,
-  onChange,
-  className,
-}) {
-  const [open, setOpen] = useState(false);
+export default function MultiSelectPopoverSchedule({ label, options, value, onChange, className }) {
+    // ["Afternoon, Morning"] // initally ONE string
+    const current = Array.isArray(value) ? value : typeof value === "string"
+        ? value.split(",").map(v => v.trim()).filter(Boolean)
+        : [];
 
-  const current = Array.isArray(value) ? value : [];
 
-  // normalize and trim for comparison
-  const normalized = current
-    .filter((v) => typeof v === "string")
-    .map((v) => v.trim().toLowerCase());
+    const toggleOption = (val) => {
+        // If user selects "Any"
+        if (val === "Any") {
+          onChange([]);
+          return;
+        }
+    
+        // If currently "Any" (empty array) and user selects something
+        if (current.length === 0) {
+          onChange([val]);
+          return;
+        }
+    
+        // Toggle normally
+        if (current.includes(val)) {
+          onChange(current.filter((v) => v !== val));
+        } else {
+          onChange([...current, val]);
+        }
+    };
+    
+    const isChecked = (val) => {
+        if (val === "Any") return current.length === 0;
+        return current.includes(val);
+    };
+      
 
-  const toggleOption = (val) => {
-    const cleanVal = val.trim();
-    const normalizedVal = cleanVal.toLowerCase();
+    return (
+        <Popover>
+            <PopoverTrigger asChild>
+                <Button
+                    type="button"
+                    variant="outline"
+                    className={`w-full justify-between text-left ${className}`}
+                >
+                    {current.length ? current.join(", ") : "Any"}
+                </Button>
+            </PopoverTrigger>
 
-    if (normalized.includes(normalizedVal)) {
-      // REMOVE it
-      const next = current.filter(
-        (v) => v.trim().toLowerCase() !== normalizedVal
-      );
-      onChange(next);
-    } else {
-      // ADD it (clean + dedupe)
-      const next = [...current, cleanVal]
-      console.log("next ", next)
-        .map((v) => (typeof v === "string" ? v.trim() : v))
-        .filter((v, idx, arr) => {
-          if (typeof v !== "string") return true;
-
-          console.log("typeof v !== string ", typeof v !== "string")
-
-          const lower = v.toLowerCase();
-          console.log("lower ", lower)
-          return arr.findIndex((x) => typeof x === "string" && x.toLowerCase() === lower) === idx;
-        });
-
-      onChange(next);
-    }
-  };
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className={`w-full justify-between text-left ${className}`}
-        >
-          {current.length ? current.join(", ") : label}
-        </Button>
-      </PopoverTrigger>
-
-      <PopoverContent className="w-full">
-        <div className="flex flex-col gap-2 p-2">
-          {options.map((opt) => {
-            const isChecked = normalized.includes(opt.value.trim().toLowerCase());
-
-            return (
-              <div key={opt.value} className="flex items-center gap-2">
-                <Checkbox
-                  checked={isChecked}
-                  onCheckedChange={() => toggleOption(opt.value)}
-                />
-                <span className="text-sm">{opt.label}</span>
-              </div>
-            );
-          })}
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
+            <PopoverContent className="w-full p-2 bg-white">
+                <div className="flex flex-col gap-2">
+                    {options.map((opt) => (
+                        <label
+                            key={opt.value}
+                            className="flex items-center gap-2 cursor-pointer"
+                        >
+                            <Checkbox
+                                checked={isChecked(opt.value)}
+                                onCheckedChange={() => toggleOption(opt.value)}
+                            />
+                            <span className="text-sm">{opt.label}</span>
+                        </label>
+                    ))}
+                </div>
+            </PopoverContent>
+        </Popover>
+    );
 }
