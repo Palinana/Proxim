@@ -13,11 +13,11 @@ export default async function AdminStaffingPage() {
     }
 
     const staffings = await Staffing.find({
-        coordinator: session.user.id,
-      })
+        "coordinator._id": session.user.id
+    })
         .sort({ createdAt: -1 })
         .lean();
-    
+      
     const plainStaffings = staffings.map((s) => ({
         ...s,
         _id: s._id.toString(),

@@ -28,7 +28,7 @@ export default function StaffingCard({ staffing }) {
             <CardHeader className="flex items-start justify-between py-3 px-4">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                     <span className={`h-3 w-3 rounded-full ${getServiceColor(serviceType)}`} />
-                    {serviceType} {workloadText}
+                    {serviceType} - {workloadText}
                 </CardTitle>
             </CardHeader>
 

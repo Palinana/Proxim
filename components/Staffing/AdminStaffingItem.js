@@ -1,42 +1,67 @@
 "use client";
 
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
 import EditStaffingDialog from "./EditStaffingDialog";
 import { deleteStaffing } from "@/app/actions/deleteStaffing";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 export default function AdminStaffingItem({ staffing }) {
+    const { serviceType, status, workload, location, preferredSchedule, caseId, coordinator } = staffing;
+
+    const workloadText = workload
+        ? `${workload.visits}x${workload.duration}/${workload.frequency}`
+        : "Not set";
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
 
     return (
-        <div className="border rounded-lg p-4 flex justify-between items-start bg-gray-50">
-            <div>
-                <div className="font-semibold">
-                {   staffing.serviceType} · {staffing.location?.city}
-                </div>
-                <div className="text-sm text-gray-600">
-                    Status: {staffing.status}
-                </div>
-            </div>
+        <Card className="w-full border-default bg-staffing-card">
+      <CardHeader className="flex flex-row items-start justify-between py-3 px-4">
+  <div className="flex-1 min-w-0 flex items-center gap-2">
+    <CardTitle className="text-base font-semibold truncate">
+      {serviceType} - {workloadText}
+    </CardTitle>
+  </div>
 
-            <div className="flex items-center gap-3">
-                <EditStaffingDialog staffing={staffing} />
+  <div className="flex items-center gap-2 flex-shrink-0">
+    <EditStaffingDialog staffing={staffing} />
 
-                <button
-                    onClick={() => {
-                        if (!confirm("Delete this staffing?")) return;
-                        startTransition(async () => {
-                        await deleteStaffing(staffing._id);
-                        router.refresh();
-                        });
-                    }}
-                className="text-red-600 hover:text-red-800"
-                >
-                    <HiOutlineTrash />
-                </button>
-            </div>
+    <button
+      onClick={() => {
+        if (!confirm("Delete this staffing?")) return;
+        startTransition(async () => {
+          await deleteStaffing(staffing._id);
+          router.refresh();
+        });
+      }}
+      className="text-red-600 hover:text-red-800"
+    >
+      <HiOutlineTrash />
+    </button>
+  </div>
+</CardHeader>
+
+
+      <CardContent className="pt-0 pb-3 px-4 space-y-1 text-sm">
+        <div>
+          <strong>Status:</strong> {status}
         </div>
+        <div>
+          <strong>EI #:</strong> {caseId || "N/A"}
+        </div>
+
+        <div>
+          <strong>Location:</strong> {location?.city}, {location?.state} {location?.zipcode}
+        </div>
+
+        <div>
+          <strong>Preferred Schedule:</strong>{" "}
+          {preferredSchedule?.length ? preferredSchedule.join(", ") : "Any"}
+        </div>
+      </CardContent>
+    </Card>
     );
 }
