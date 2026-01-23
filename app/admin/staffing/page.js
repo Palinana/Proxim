@@ -2,7 +2,7 @@ import connectDB from "@/config/database";
 import Staffing from "@/models/Staffing";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
-import AdminStaffingList from "@/components/staffing/AdminStaffingList";
+import StaffingList from "@/components/staffing/StaffingList";
 
 export default async function AdminStaffingPage() {
     await connectDB();
@@ -33,7 +33,7 @@ export default async function AdminStaffingPage() {
             {/* Centered content */}
             <div className="flex flex-1 justify-center py-10">
                 <div className="w-full max-w-4xl bg-white rounded-2xl p-6 shadow-sm">
-                    <AdminStaffingList staffings={plainStaffings} />
+                    <StaffingList staffings={plainStaffings} />
                 </div>
             </div>
         </div>

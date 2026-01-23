@@ -2,13 +2,12 @@
 
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
 import EditStaffingDialog from "./EditStaffingDialog";
 import { deleteStaffing } from "@/app/actions/deleteStaffing";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-export default function AdminStaffingItem({ staffing }) {
+export default function StaffingItem({ staffing, admins, isSuperadmin }) {
     const { serviceType, status, workload, location, preferredSchedule, caseId, coordinator } = staffing;
 
     const workloadText = workload
@@ -27,7 +26,12 @@ export default function AdminStaffingItem({ staffing }) {
                 </div>
 
                 <div className="flex items-center gap-2 flex-shrink-0">
-                    <EditStaffingDialog staffing={staffing} />
+                    {/* <EditStaffingDialog staffing={staffing} /> */}
+                    <EditStaffingDialog
+                        staffing={staffing}
+                        admins={admins}
+                        isSuperadmin={isSuperadmin}
+                    />
 
                     <button
                         onClick={() => {

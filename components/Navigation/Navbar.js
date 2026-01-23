@@ -23,11 +23,11 @@ const Navbar = () => {
         ] : []),
         ...(role === "user" ? [{ label: "Profile", href: "/profile", icon: <HiOutlineUser className="inline-block mr-1" /> }] : []),
         ...(role === "admin" ? [
-            { label: "My Staffing", href: "/admin", icon: <FaUserFriends className="inline-block mr-1" /> },
+            { label: "My Staffing", href: "/admin/staffing", icon: <FaUserFriends className="inline-block mr-1" /> },
             { label: "Profile", href: "/profile", icon: <HiOutlineUser className="inline-block mr-1" /> }
         ] : []),
         ...(role === "superadmin" ? [
-            { label: "All Staffings", href: "/superadmin", icon: <AiOutlineFileText className="inline-block mr-1" /> },
+            { label: "All Staffings", href: "/superadmin/staffing", icon: <AiOutlineFileText className="inline-block mr-1" /> },
             { label: "Insights", href: "/insights", icon: <AiOutlineLineChart className="inline-block mr-1" /> },
             { label: "Profile", href: "/profile", icon: <HiOutlineUser className="inline-block mr-1" /> }
         ] : []),

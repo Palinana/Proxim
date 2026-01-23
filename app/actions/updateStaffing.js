@@ -31,7 +31,7 @@ export async function updateStaffing(id, formData) {
 
     const data = Object.fromEntries(formData);
 
-    // const workloadFreq = formData.get("workloadFreq") || data.workloadFreq;
+    const workloadFreq = formData.get("workloadFreq") || data.workloadFreq;
 
     // preferredSchedule from form
     const preferredScheduleRaw = formData.getAll("preferredSchedule");
@@ -49,9 +49,9 @@ export async function updateStaffing(id, formData) {
         status: data.status,
         caseId: data.caseId,
         location: {
-            city: data.city,
-            state: data.state,
-            zipcode: data.zipcode,
+        city: data.city,
+        state: data.state,
+        zipcode: data.zipcode,
         },
         preferredSchedule: preferredSchedule,
         workload: {
@@ -64,3 +64,4 @@ export async function updateStaffing(id, formData) {
 
     revalidatePath("/admin");
 }
+

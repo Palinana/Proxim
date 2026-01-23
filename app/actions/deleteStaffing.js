@@ -13,6 +13,13 @@ export async function deleteStaffing(id) {
         throw new Error("Unauthorized");
     }
 
+    const staffing = await Staffing.findById(id);
+    if (!staffing) throw new Error("Not found");
+
+    if (session.user.role === "admin" && staffing.coordinator.toString() !== session.user.id) {
+        throw new Error("Not allowed");
+    }
+
     await Staffing.findByIdAndDelete(id);
     revalidatePath("/admin");
 }
