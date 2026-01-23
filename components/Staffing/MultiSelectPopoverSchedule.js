@@ -10,8 +10,7 @@ export default function MultiSelectPopoverSchedule({ label, options, value, onCh
     const current = Array.isArray(value) ? value : typeof value === "string"
         ? value.split(",").map(v => v.trim()).filter(Boolean)
         : [];
-
-
+        
     const toggleOption = (val) => {
         // If user selects "Any"
         if (val === "Any") {
@@ -38,7 +37,6 @@ export default function MultiSelectPopoverSchedule({ label, options, value, onCh
         return current.includes(val);
     };
       
-
     return (
         <Popover>
             <PopoverTrigger asChild>

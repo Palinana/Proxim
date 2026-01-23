@@ -12,16 +12,33 @@ export default async function AdminStaffingPage() {
         return null; // or redirect
     }
 
-    const staffings = await Staffing.find({
-        "coordinator._id": session.user.id
-    })
-        .sort({ createdAt: -1 })
-        .lean();
-      
-    const plainStaffings = staffings.map((s) => ({
-        ...s,
-        _id: s._id.toString(),
-    }));
+    // const staffings = await Staffing.find({
+    //     "coordinator._id": session.user.id
+    // })
+    //     .sort({ createdAt: -1 })
+    //     .lean();
+   
+    // const plainStaffings = staffings.map((s) => ({
+    //     ...s,
+    //     _id: s._id.toString(),
+    // }));
+
+    const userId = session.user.id;
+
+  // Fetch staffings for this admin and populate coordinator info
+  const staffings = await Staffing.find({ coordinator: userId })
+    .populate("coordinator", "first_name last_name email phone role")
+    .sort({ createdAt: -1 })
+    .lean();
+
+    // Convert _id to string for client
+  const plainStaffings = staffings.map((s) => ({
+    ...s,
+    _id: s._id.toString(),
+    coordinator: s.coordinator
+      ? { ...s.coordinator, _id: s.coordinator._id.toString() }
+      : null,
+  }));
 
     return (
         <div className="flex flex-col h-full bg-gray-50">

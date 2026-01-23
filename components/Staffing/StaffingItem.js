@@ -62,6 +62,18 @@ export default function StaffingItem({ staffing, admins, isSuperadmin }) {
                     <strong>Preferred Schedule:</strong>{" "}
                     {preferredSchedule?.length ? preferredSchedule.join(", ") : "Any"}
                 </div>
+                {isSuperadmin && coordinator &&  (
+  <div className="pt-2 border-t text-xs text-muted-foreground">
+    <div>
+      <strong>Coordinator:</strong>{" "}
+      {coordinator.first_name} {coordinator.last_name}
+    </div>
+    <div>
+      {coordinator.email} • {coordinator.phone || "No phone"}
+    </div>
+  </div>
+)}
+
             </CardContent>
         </Card>
     );
