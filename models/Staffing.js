@@ -5,7 +5,7 @@ const StaffingSchema = new Schema(
         caseId: {
             type: String,
             required: true,
-            unique: true
+            // unique: true
         },
         serviceType: {
             type: String,

@@ -45,7 +45,17 @@ export default function StaffingForm({ staffing, admins, isSuperadmin, isPending
           <input type="hidden" name="serviceType" value={serviceType} />
 
           {/* Status */}
-          <Input name="status" value={status} onChange={(e) => setStatus(e.target.value)} placeholder="Status" />
+          <Select value={status} onValueChange={setStatus}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Status"/>
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectItem value="Open">Open</SelectItem>
+                <SelectItem value="Pending">Pending</SelectItem>
+                <SelectItem value="Closed">Closed</SelectItem>
+              </SelectContent>
+            </Select>
+          <input type="hidden" name="status" value={status} />
 
           {/* Case */}
           <Input name="caseId" value={caseId} onChange={(e) => setCaseId(e.target.value)} placeholder="EI #" />

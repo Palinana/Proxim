@@ -66,7 +66,8 @@ const Navbar = () => {
             </div>
 
            {/* Right: Profile notice + Auth + Mobile */}
-            <div className="flex items-center space-x-3">
+            {/* <div className="flex items-center space-x-3"> */}
+            <div className="flex items-center">
                 {needsPhone && (
                     <>
                         <Link

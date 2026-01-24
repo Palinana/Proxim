@@ -20,8 +20,12 @@ export default function StaffingItem({ staffing, admins, isSuperadmin }) {
         <Card className="w-full border-default bg-staffing-card">
             <CardHeader className="flex flex-row items-start justify-between py-3 px-4">
                 <div className="flex-1 min-w-0 flex items-center gap-2">
-                    <CardTitle className="text-base font-semibold truncate">
+                    {/* <CardTitle className="text-base font-semibold truncate">
                         {serviceType} - {workloadText}
+                    </CardTitle> */}
+
+                    <CardTitle className="text-base font-semibold truncate">
+                        EI #: {caseId || "N/A"}
                     </CardTitle>
                 </div>
 
@@ -53,7 +57,11 @@ export default function StaffingItem({ staffing, admins, isSuperadmin }) {
                     <strong>Status:</strong> {status}
                 </div>
                 <div>
-                    <strong>EI #:</strong> {caseId || "N/A"}
+                    {/* <strong>EI #:</strong> {caseId || "N/A"} */}
+                    <strong>Service:</strong> {serviceType}
+                </div>
+                <div>
+                    <strong>Mandate:</strong> {workloadText}
                 </div>
                 <div>
                     <strong>Location:</strong> {location?.city}, {location?.state} {location?.zipcode}
@@ -62,17 +70,18 @@ export default function StaffingItem({ staffing, admins, isSuperadmin }) {
                     <strong>Preferred Schedule:</strong>{" "}
                     {preferredSchedule?.length ? preferredSchedule.join(", ") : "Any"}
                 </div>
+
                 {isSuperadmin && coordinator &&  (
-  <div className="pt-2 border-t text-xs text-muted-foreground">
-    <div>
-      <strong>Coordinator:</strong>{" "}
-      {coordinator.first_name} {coordinator.last_name}
-    </div>
-    <div>
-      {coordinator.email} • {coordinator.phone || "No phone"}
-    </div>
-  </div>
-)}
+                    <div className="pt-2 border-t text-xs text-muted-foreground">
+                        <div>
+                            <strong>Coordinator:</strong>{" "}
+                            {coordinator.first_name} {coordinator.last_name}
+                        </div>
+                        <div>
+                            {coordinator.email} • {coordinator.phone || "No phone"}
+                        </div>
+                    </div>
+                )}
 
             </CardContent>
         </Card>

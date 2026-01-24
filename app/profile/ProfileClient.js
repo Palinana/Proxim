@@ -153,12 +153,22 @@ export default function ProfileClient({ user }) {
                                     />
                                 </div>
 
-                                <DialogFooter className="pt-4">
+                                {/* <DialogFooter className="pt-4">
                                     <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                                         Cancel
                                     </Button>
-                                    <Button type="submit" disabled={isPending}>
+                                    <Button type="submit" disabled={isPending} >
                                     {   isPending ? "Saving..." : "Save"}
+                                    </Button>
+                                </DialogFooter> */}
+
+                                <DialogFooter className="pt-4 w-full flex !justify-center">
+                                    <Button
+                                        type="submit"
+                                        disabled={isPending}
+                                        className="mt-4 btn-primary"
+                                    >
+                                        {isPending ? "Saving..." : "Save"}
                                     </Button>
                                 </DialogFooter>
                             </form>
