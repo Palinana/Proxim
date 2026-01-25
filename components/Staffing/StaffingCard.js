@@ -19,16 +19,19 @@ export default function StaffingCard({ staffing }) {
         ? `${workload.visits}x${workload.duration}/${workload.frequency}`
         : "Not set";
 
-    const coordLine = coordinator
-        ? `${coordinator.name} • ${coordinator.phone} • ${coordinator.email}`
-        : "Coordinator info not set";
+    // const coordLine = coordinator
+    //     ? `${coordinator.name} • ${coordinator.phone} • ${coordinator.email}`
+    //     : "Coordinator info not set";
+    const coordName = coordinator
+        ? `${coordinator.first_name} ${coordinator.last_name}`
+        : "Unknown";
 
     return (
         <Card className="w-full border-default bg-staffing-card">
             <CardHeader className="flex items-start justify-between py-3 px-4">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                     <span className={`h-3 w-3 rounded-full ${getServiceColor(serviceType)}`} />
-                    {serviceType} {workloadText}
+                    {serviceType} - {workloadText}
                 </CardTitle>
             </CardHeader>
 
@@ -45,9 +48,13 @@ export default function StaffingCard({ staffing }) {
                 </div>
 
                 <div className="pt-2 border-t border-gray-200 text-sm text-muted">
-                <div><strong>Coordinator:</strong> {coordinator?.name}</div>
+                    {/* <div><strong>Coordinator:</strong> {coordinator?.name}</div>
                     <div className="text-xs text-muted-foreground">
                         {coordinator?.phone} • {coordinator?.email}
+                    </div> */}
+                    <div><strong>Coordinator:</strong> {coordName}</div>
+                    <div className="text-xs text-muted-foreground">
+                        {coordinator?.email} • {coordinator?.phone || "No phone"}
                     </div>
                 </div>
             </CardContent>

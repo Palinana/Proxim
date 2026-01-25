@@ -5,7 +5,7 @@ const StaffingSchema = new Schema(
         caseId: {
             type: String,
             required: true,
-            unique: true
+            // unique: true
         },
         serviceType: {
             type: String,
@@ -15,7 +15,7 @@ const StaffingSchema = new Schema(
         },
         status: {
             type: String,
-            enum: ["open", "pending", "filled", "closed"],
+            enum: ["Open", "Pending", "Filled", "Closed"],
             default: "open",
             index: true,
         },
@@ -32,22 +32,22 @@ const StaffingSchema = new Schema(
             },
             frequency: {
                 type: String,
-                enum: ["weekly", "monthly"],
+                enum: ["Weekly", "Monthly"],
                 required: true,
             },
         },
         preferredSchedule: {
             type: [String],
-            enum: ["morning", "afternoon", "evening"],
+            enum: ["Morning", "Afternoon", "Evening"],
             default: [], // “No preference”
         },
         // Approximate location only (HIPAA-safe)
         location: {
-            geohash: {
-                type: String,
-                required: true,
-                index: true,
-            },
+            // geohash: {
+            //     type: String,
+            //     required: true,
+            //     index: true,
+            // },
       
             // Optional coarse metadata (safe)
             city: String,
@@ -55,16 +55,16 @@ const StaffingSchema = new Schema(
             zipcode: String,
       
             // Approximate map point (rounded / truncated)
-            coordinates: {
-                lat: {
-                    type: Number,
-                    required: true,
-                },
-                lng: {
-                    type: Number,
-                    required: true,
-                },
-            },
+            // coordinates: {
+            //     lat: {
+            //         type: Number,
+            //         required: true,
+            //     },
+            //     lng: {
+            //         type: Number,
+            //         required: true,
+            //     },
+            // },
         },
         // Who created / owns this staffing
         coordinator: {

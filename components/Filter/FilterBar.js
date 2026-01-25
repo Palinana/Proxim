@@ -2,8 +2,10 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { HiOutlineShare } from "react-icons/hi";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import MultiSelectPopover from "./MultiSelectPopover";
+import OutlineButton from "../Elements/OutlineGreenButton";
 
 export default function FilterBar({ coordinators, role, userId }) {
     const router = useRouter();
@@ -24,8 +26,23 @@ export default function FilterBar({ coordinators, role, userId }) {
         router.push(`/?${params.toString()}`);
     };
 
+    const handleShare = () => {
+        const params = new URLSearchParams(searchParams);
+
+        if (role === "admin" && userId) {
+            params.set("coordinator", userId);
+        }
+
+        const shareUrl = `${window.location.origin}/?${params.toString()}`;
+        navigator.clipboard.writeText(shareUrl);
+        alert("Link copied to clipboard");
+    }
+
     return (
-        <div className="flex flex-wrap gap-3 items-center">
+        // <div className="flex flex-wrap gap-3 items-center">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap gap-3 items-center">
+
             {/* Service */}
             <Select
                 value={searchParams.get("service") || ""}
@@ -114,8 +131,15 @@ export default function FilterBar({ coordinators, role, userId }) {
                     onChange={(vals) => setMultiParam("coordinator", vals)}
                 />
             )}
+        </div>
 
-            <div className="flex items-center">
+
+
+
+
+        <div className="flex items-center gap-3">
+
+            {/* <div className="flex items-center"> */}
                 <button
                     onClick={() => router.push("/")}
                     className="text-sm text-secondary-2 hover:underline !font-bold"
@@ -126,7 +150,7 @@ export default function FilterBar({ coordinators, role, userId }) {
                 {/* Divider */}
                 <span className="mx-3 h-4 w-px bg-gray-300" />
 
-                <button
+                {/* <button
                     onClick={() => {
                         const params = new URLSearchParams(searchParams);
 
@@ -138,10 +162,23 @@ export default function FilterBar({ coordinators, role, userId }) {
                         navigator.clipboard.writeText(shareUrl);
                         alert("Link copied to clipboard");
                     }}
-                    className="px-3 py-1.5 text-sm font-medium text-green-600 border border-green-600 rounded hover:bg-green-600 hover:text-white transition"
+                    className="inline-flex items-center gap-2
+                    px-3 py-1.5
+                    text-sm font-medium
+                    text-green-600
+                    border border-green-600
+                    rounded
+                    hover:bg-green-600 hover:text-white
+                    transition"
                 >
+                    <HiOutlineShare className="h-4 w-4 shrink-0" />
                     Share
-                </button>
+                </button> */}
+
+                <OutlineButton onClick={handleShare}>
+                    <HiOutlineShare className="h-4 w-4 shrink-0" />
+                    Share
+                </OutlineButton>
             </div>
         </div>
     );

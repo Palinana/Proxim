@@ -22,19 +22,19 @@ const Dashboard = async ({ searchParams }) => {
 
     // ADMIN ONLY: see only their own staffings
     if (role === "admin") {
-    query["coordinator._id"] = userId;
+        query.coordinator = userId;
     }
-
+     
     // PUBLIC/USER/SUPERADMIN: filter by coordinator if provided
     if (params?.coordinator) {
-    query["coordinator._id"] = params.coordinator;
+        query.coordinator = params.coordinator;
     }
 
     // PUBLIC: share link by admin ID
     if (!role && params?.admin) {
-    query["coordinator._id"] = params.admin;
+        query.coordinator = params.admin;
     }
-
+      
     // Filters
     if (params?.borough) query["location.city"] = params.borough;
     if (params?.service) query.serviceType = params.service;
@@ -59,11 +59,11 @@ const Dashboard = async ({ searchParams }) => {
 
     const sort = params?.sort === "old" ? 1 : -1;
 
-    // query for SC is just their coordiantor ID
     const staffings = await Staffing.find(query)
+        .populate("coordinator", "first_name last_name email phone role")
         .sort({ createdAt: sort })
         .lean();
-    
+        
     const coordinators = await User.find({ role: "admin" })
         .select("first_name last_name _id")
         .lean();
