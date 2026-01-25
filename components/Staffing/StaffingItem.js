@@ -20,17 +20,12 @@ export default function StaffingItem({ staffing, admins, isSuperadmin }) {
         <Card className="w-full border-default bg-staffing-card">
             <CardHeader className="flex flex-row items-start justify-between py-3 px-4">
                 <div className="flex-1 min-w-0 flex items-center gap-2">
-                    {/* <CardTitle className="text-base font-semibold truncate">
-                        {serviceType} - {workloadText}
-                    </CardTitle> */}
-
                     <CardTitle className="text-base font-semibold truncate">
                         EI #: {caseId || "N/A"}
                     </CardTitle>
                 </div>
 
                 <div className="flex items-center gap-2 flex-shrink-0">
-                    {/* <EditStaffingDialog staffing={staffing} /> */}
                     <EditStaffingDialog
                         staffing={staffing}
                         admins={admins}
@@ -57,7 +52,6 @@ export default function StaffingItem({ staffing, admins, isSuperadmin }) {
                     <strong>Status:</strong> {status}
                 </div>
                 <div>
-                    {/* <strong>EI #:</strong> {caseId || "N/A"} */}
                     <strong>Service:</strong> {serviceType}
                 </div>
                 <div>

@@ -1,35 +1,3 @@
-// "use server";
-
-// import connectDB from "@/config/database";
-// import Staffing from "@/models/Staffing";
-// import { getServerSession } from "next-auth";
-// import { authOptions } from "@/utils/authOptions";
-
-// export async function addStaffing(formData) {
-//     await connectDB();
-
-//     const session = await getServerSession(authOptions);
-//     if (!session) throw new Error("Unauthorized");
-
-//     const coordinatorId = formData.get("coordinatorId") || session.user.id;
-
-//     await Staffing.create({
-//         serviceType: formData.get("serviceType"),
-//         status: formData.get("status"),
-//         caseId: formData.get("caseId"),
-//         location: {
-//             city: formData.get("city"),
-//             state: formData.get("state"),
-//             zipcode: formData.get("zipcode"),
-//         },
-//         workload: {
-//             visits: Number(formData.get("workloadVisits")),
-//             duration: Number(formData.get("workloadDuration")),
-//             frequency: formData.get("workloadFreq"),
-//         },
-//         coordinator: coordinatorId,
-//     });
-// }
 "use server";
 
 import connectDB from "@/config/database";

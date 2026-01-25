@@ -17,12 +17,12 @@ export default function MultiSelectPopover({ label, options, value = [], onChang
     return (
         <Popover>
             <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-48 bg-white font-normal text-secondary-2 text-secondary-2-hover:hover justify-between border border-gray-300">
+                  <Button variant="outline" className="w-43 bg-white font-normal text-secondary-2 text-secondary-2-hover:hover justify-between border border-gray-300">
                     {value.length ? value.join(", ") : label}
                   </Button>
             </PopoverTrigger>
 
-            <PopoverContent className="w-48 bg-white border border-gray-200 shadow-md">
+            <PopoverContent className="w-43 bg-white border border-gray-200 shadow-md">
                 <div className="space-y-1">
                     {options.map((opt) => (
                       <label
