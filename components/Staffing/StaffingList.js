@@ -4,7 +4,9 @@ import StaffingItem from "./StaffingItem";
 import AddStaffingDialog from "./AddStaffingDialog";
 import FilterBarAdminPage from "../Filter/FilterBarAdminPage";
 
-export default function StaffingList({ staffings, allStaffing, total, admins = [], isSuperadmin = false,}) {
+export default function StaffingList({ staffings = [], allStaffing = [], total = 0, admins = [], isSuperadmin = false, coordinators = []}) {
+    const showCoordinator = isSuperadmin;
+
     return (
       <div className="h-full flex flex-col">
           <div className="flex items-center justify-between border-b border-gray-200 pb-3">
@@ -13,7 +15,7 @@ export default function StaffingList({ staffings, allStaffing, total, admins = [
           </div>
 
           <div className="bg-background py-3">
-                <FilterBarAdminPage coordinators={[]} showCoordinator={false} staffings={staffings} allStaffing={allStaffing}/>
+                <FilterBarAdminPage coordinators={coordinators} showCoordinator={showCoordinator} staffings={staffings} allStaffing={allStaffing}/>
           </div>
 
           <div className="flex-1 overflow-y-auto space-y-3">

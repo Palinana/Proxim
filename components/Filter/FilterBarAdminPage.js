@@ -4,7 +4,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import MultiSelectPopover from "./MultiSelectPopover";
 
-export default function FilterBarAdminPage({ staffings = [], allStaffing, showCoordinator = false, coordinators = [] }) {
+export default function FilterBarAdminPage({ staffings = [], allStaffing = [], showCoordinator = false, coordinators = [] }) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -23,7 +23,17 @@ export default function FilterBarAdminPage({ staffings = [], allStaffing, showCo
         router.push(`${pathname}?${params.toString()}`);
     };
 
-    const caseIds = [...new Set(allStaffing.map((s) => s.caseId).filter(Boolean))];
+    // const caseIds = [...new Set(allStaffing.map((s) => s.caseId).filter(Boolean))];
+
+    // ----------------------------
+    // EI List (fallback to staffings)
+    // ----------------------------
+    const eiList = (allStaffing?.length ? allStaffing : staffings) || [];
+    const uniqueEIs = Array.from(new Set(eiList.map((s) => s.caseId)));
+
+    const handleClear = () => {
+        router.push(pathname);
+    };
   
     return (
         <div className="flex items-start justify-between gap-4">
@@ -39,7 +49,7 @@ export default function FilterBarAdminPage({ staffings = [], allStaffing, showCo
                   </SelectTrigger>
 
                   <SelectContent className="bg-white border border-gray-200">
-                    {caseIds.map((ei) => (
+                    {uniqueEIs.map((ei) => (
                       <SelectItem key={ei} value={ei}>
                         {ei}
                       </SelectItem>
@@ -129,24 +139,35 @@ export default function FilterBarAdminPage({ staffings = [], allStaffing, showCo
                     onChange={(vals) => setMultiParam("zip", vals)}
                   />
 
-                  {/* Coordinator */}
+                  {/* Coordinator (only for superadmin) */}
                   {showCoordinator && (
+                      <MultiSelectPopover
+                        label="Coordinator"
+                        options={coordinators}
+                        value={(searchParams.get("coordinator") || "").split(",").filter(Boolean)}
+                        onChange={(vals) => setMultiParam("coordinator", vals)}
+                      />
+                  )}
+
+                  {/* Coordinator */}
+                  {/* {showCoordinator && (
                     <MultiSelectPopover
                       label="Coordinator"
                       options={coordinators}
                       value={(searchParams.get("coordinator") || "").split(",").filter(Boolean)}
                       onChange={(vals) => setMultiParam("coordinator", vals)}
                     />
-                  )}
+                  )} */}
               </div>
           </div>
 
           <button
-            onClick={() => router.push(pathname)}
+            onClick={handleClear}
             className="text-sm text-secondary-2 hover:underline !font-bold"
           >
-            Clear filters
+              Clear filters
           </button>
       </div>
     );
 }
+
