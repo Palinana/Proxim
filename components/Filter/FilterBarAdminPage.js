@@ -148,16 +148,6 @@ export default function FilterBarAdminPage({ staffings = [], allStaffing = [], s
                         onChange={(vals) => setMultiParam("coordinator", vals)}
                       />
                   )}
-
-                  {/* Coordinator */}
-                  {/* {showCoordinator && (
-                    <MultiSelectPopover
-                      label="Coordinator"
-                      options={coordinators}
-                      value={(searchParams.get("coordinator") || "").split(",").filter(Boolean)}
-                      onChange={(vals) => setMultiParam("coordinator", vals)}
-                    />
-                  )} */}
               </div>
           </div>
 

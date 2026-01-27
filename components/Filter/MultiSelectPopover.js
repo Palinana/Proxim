@@ -14,8 +14,6 @@ export default function MultiSelectPopover({ label, options, value = [], onChang
         else onChange([...value, val]);
     };
 
-    // console.log("options - ", options)
-
     return (
         <Popover>
             <PopoverTrigger asChild>

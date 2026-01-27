@@ -19,9 +19,6 @@ export default function StaffingCard({ staffing }) {
         ? `${workload.visits}x${workload.duration}/${workload.frequency}`
         : "Not set";
 
-    // const coordLine = coordinator
-    //     ? `${coordinator.name} • ${coordinator.phone} • ${coordinator.email}`
-    //     : "Coordinator info not set";
     const coordName = coordinator
         ? `${coordinator.first_name} ${coordinator.last_name}`
         : "Unknown";
@@ -48,10 +45,6 @@ export default function StaffingCard({ staffing }) {
                 </div>
 
                 <div className="pt-2 border-t border-gray-200 text-sm text-muted">
-                    {/* <div><strong>Coordinator:</strong> {coordinator?.name}</div>
-                    <div className="text-xs text-muted-foreground">
-                        {coordinator?.phone} • {coordinator?.email}
-                    </div> */}
                     <div><strong>Coordinator:</strong> {coordName}</div>
                     <div className="text-xs text-muted-foreground">
                         {coordinator?.email} • {coordinator?.phone || "No phone"}

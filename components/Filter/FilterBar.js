@@ -13,19 +13,6 @@ export default function FilterBar({ coordinators, role, userId }) {
     const pathname = usePathname();
     const showCoordinatorFilter = role === "superadmin";
 
-    // const setParam = (key, value) => {
-    //     const params = new URLSearchParams(searchParams);
-    //     if (!value) params.delete(key);
-    //     else params.set(key, value);
-    //     router.push(`/?${params.toString()}`);
-    // };
-
-    // const setMultiParam = (key, values) => {
-    //     const params = new URLSearchParams(searchParams);
-    //     if (!values.length) params.delete(key);
-    //     else params.set(key, values.join(","));
-    //     router.push(`/?${params.toString()}`);
-    // };
     const setParam = (key, value) => {
         const params = new URLSearchParams(searchParams);
         if (!value) params.delete(key);
@@ -76,6 +63,7 @@ export default function FilterBar({ coordinators, role, userId }) {
                     <SelectItem className="bg-white hover:bg-gray-50" value="ST">ST</SelectItem>
                     <SelectItem className="bg-white hover:bg-gray-50" value="OT">OT</SelectItem>
                     <SelectItem className="bg-white hover:bg-gray-50" value="PT">PT</SelectItem>
+                    <SelectItem className="bg-white hover:bg-gray-50" value="SI">SI</SelectItem>
                     <SelectItem className="bg-white hover:bg-gray-50" value="ABA">ABA</SelectItem>
                 </SelectContent>
             </Select>
@@ -153,20 +141,7 @@ export default function FilterBar({ coordinators, role, userId }) {
             )}
         </div>
 
-
-
-
-
         <div className="flex items-center gap-3">
-
-            {/* <div className="flex items-center"> */}
-                {/* <button
-                    onClick={() => router.push("/")}
-                    className="text-sm text-secondary-2 hover:underline !font-bold"
-                >
-                    Clear filters
-                </button> */}
-
                 <button
                     onClick={handleClear}
                     className="text-sm text-secondary-2 hover:underline !font-bold"
@@ -174,34 +149,8 @@ export default function FilterBar({ coordinators, role, userId }) {
                     Clear filters
                 </button>
 
-
                 {/* Divider */}
                 <span className="mx-3 h-4 w-px bg-gray-300" />
-
-                {/* <button
-                    onClick={() => {
-                        const params = new URLSearchParams(searchParams);
-
-                        if (role === "admin" && userId) {
-                        params.set("coordinator", userId);
-                        }
-
-                        const shareUrl = `${window.location.origin}/?${params.toString()}`;
-                        navigator.clipboard.writeText(shareUrl);
-                        alert("Link copied to clipboard");
-                    }}
-                    className="inline-flex items-center gap-2
-                    px-3 py-1.5
-                    text-sm font-medium
-                    text-green-600
-                    border border-green-600
-                    rounded
-                    hover:bg-green-600 hover:text-white
-                    transition"
-                >
-                    <HiOutlineShare className="h-4 w-4 shrink-0" />
-                    Share
-                </button> */}
 
                 <OutlineButton onClick={handleShare}>
                     <HiOutlineShare className="h-4 w-4 shrink-0" />
