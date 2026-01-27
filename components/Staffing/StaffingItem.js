@@ -66,7 +66,7 @@ export default function StaffingItem({ staffing, admins, isSuperadmin }) {
                 </div>
 
                 {isSuperadmin && coordinator &&  (
-                    <div className="pt-2 border-t text-xs text-muted-foreground">
+                    <div className="pt-2 border-t border-gray-200 text-xs text-muted text-muted-foreground">
                         <div>
                             <strong>Coordinator:</strong>{" "}
                             {coordinator.first_name} {coordinator.last_name}

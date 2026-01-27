@@ -18,7 +18,7 @@ export default function MultiSelectPopover({ label, options, value = [], onChang
         <Popover>
             <PopoverTrigger asChild>
                   <Button variant="outline" className="w-43 bg-white font-normal text-secondary-2 text-secondary-2-hover:hover justify-between border border-gray-300">
-                    {value.length ? value.join(", ") : label}
+                      {value.length ? value.map((id) => options.find(o => o.value === id)?.label || id).join(", ") : label}
                   </Button>
             </PopoverTrigger>
 

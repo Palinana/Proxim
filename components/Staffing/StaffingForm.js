@@ -27,6 +27,9 @@ export default function StaffingForm({ staffing, admins, isSuperadmin, isPending
 
     const [preferredSchedule, setPreferredSchedule] = useState(staffing.preferredSchedule || []);
 
+    const [coordinatorId, setCoordinatorId] = useState("");
+
+    console.log("admins ", admins)
     return (
         <div className="space-y-4">
           {/* Service Type */}
@@ -56,6 +59,28 @@ export default function StaffingForm({ staffing, admins, isSuperadmin, isPending
               </SelectContent>
             </Select>
           <input type="hidden" name="status" value={status} />
+
+          {/* Coordinator for Superadmin */}
+          {isSuperadmin && (
+              <>
+                <Select value={coordinatorId} onValueChange={setCoordinatorId}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Coordinator" />
+                  </SelectTrigger>
+
+                  <SelectContent className="bg-white">
+                    {admins.map((a) => (
+                      <SelectItem key={a.value} value={a.value}>
+                        {a.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* hidden input for server action */}
+                <input type="hidden" name="coordinatorId" value={coordinatorId} />
+              </>
+          )}
 
           {/* Case */}
           <Input name="caseId" value={caseId} onChange={(e) => setCaseId(e.target.value)} placeholder="EI #" />
