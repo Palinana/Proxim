@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { HiOutlineShare } from "react-icons/hi";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,20 +10,40 @@ import OutlineButton from "../Elements/OutlineGreenButton";
 export default function FilterBar({ coordinators, role, userId }) {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const showCoordinatorFilter = role === "admin";
+    const pathname = usePathname();
+    const showCoordinatorFilter = role === "superadmin";
 
+    // const setParam = (key, value) => {
+    //     const params = new URLSearchParams(searchParams);
+    //     if (!value) params.delete(key);
+    //     else params.set(key, value);
+    //     router.push(`/?${params.toString()}`);
+    // };
+
+    // const setMultiParam = (key, values) => {
+    //     const params = new URLSearchParams(searchParams);
+    //     if (!values.length) params.delete(key);
+    //     else params.set(key, values.join(","));
+    //     router.push(`/?${params.toString()}`);
+    // };
     const setParam = (key, value) => {
         const params = new URLSearchParams(searchParams);
         if (!value) params.delete(key);
         else params.set(key, value);
-        router.push(`/?${params.toString()}`);
+      
+        router.push(`${pathname}?${params.toString()}`);
     };
-
+      
     const setMultiParam = (key, values) => {
         const params = new URLSearchParams(searchParams);
         if (!values.length) params.delete(key);
         else params.set(key, values.join(","));
-        router.push(`/?${params.toString()}`);
+      
+        router.push(`${pathname}?${params.toString()}`);
+    };  
+
+    const handleClear = () => {
+        router.push(pathname);
     };
 
     const handleShare = () => {
@@ -140,12 +160,20 @@ export default function FilterBar({ coordinators, role, userId }) {
         <div className="flex items-center gap-3">
 
             {/* <div className="flex items-center"> */}
-                <button
+                {/* <button
                     onClick={() => router.push("/")}
                     className="text-sm text-secondary-2 hover:underline !font-bold"
                 >
                     Clear filters
+                </button> */}
+
+                <button
+                    onClick={handleClear}
+                    className="text-sm text-secondary-2 hover:underline !font-bold"
+                >
+                    Clear filters
                 </button>
+
 
                 {/* Divider */}
                 <span className="mx-3 h-4 w-px bg-gray-300" />
