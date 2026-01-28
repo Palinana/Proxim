@@ -18,6 +18,7 @@ export default function StaffingForm({ staffing, admins, isSuperadmin, isPending
     // const [status, setStatus] = useState(staffing.status || "");
     const [dob, setDob] = useState("");
     const [caseId, setCaseId] = useState(staffing.caseId || "");
+    const [street, setStreet] = useState("");
     const [city, setCity] = useState(staffing.location?.city || "");
     const [state, setState] = useState(staffing.location?.state || "");
     const [zipcode, setZipcode] = useState(staffing.location?.zipcode || "");
@@ -38,15 +39,19 @@ export default function StaffingForm({ staffing, admins, isSuperadmin, isPending
             {/* Age */}
             <Input name="dob" value={dob} onChange={(e) => setDob(e.target.value)} placeholder="MM/DD/YYYY" />
             {staffing.ageRange && (
-              <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500">
                 Current age: <span className="font-medium">{staffing.ageRange}</span>
-              </p>
+            </p>
             )}
 
             {/* Location */}
+            <Input name="street" value={street} onChange={(e) => setStreet(e.target.value)} placeholder="Street address"/> 
             <Input name="city" value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
             <Input name="state" value={state} onChange={(e) => setState(e.target.value)} placeholder="State" />
             <Input name="zipcode" value={zipcode} onChange={(e) => setZipcode(e.target.value)} placeholder="Zipcode" />
+            <p className="text-xs text-muted-foreground">
+                Street is used only to approximate location and is not saved.
+            </p>
 
             {/* Coordinator for Superadmin */}
             {isSuperadmin && (

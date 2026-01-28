@@ -54,23 +54,22 @@ const StaffingSchema = new Schema(
             //     required: true,
             //     index: true,
             // },
-      
-            // Optional coarse metadata (safe)
             city: String,
             state: String,
             zipcode: String,
-      
             // Approximate map point (rounded / truncated)
-            // coordinates: {
-            //     lat: {
-            //         type: Number,
-            //         required: true,
-            //     },
-            //     lng: {
-            //         type: Number,
-            //         required: true,
-            //     },
-            // },
+            coordinates: {
+                lat: {
+                    type: Number,
+                    required: true,
+                    index: true,
+                },
+                lng: {
+                    type: Number,
+                    required: true,
+                    index: true,
+                },
+            },
         },
         // Who created / owns this staffing
         coordinator: {

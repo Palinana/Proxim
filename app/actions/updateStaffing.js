@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
 import { getAgeRange } from "@/utils/getAgeRange";
+import { getApproximateLocation } from "../../utils/getApproximateLocation";
 
 export async function updateStaffing(id, formData) {
     await connectDB();
@@ -50,14 +51,23 @@ export async function updateStaffing(id, formData) {
         ageRange = getAgeRange(data.dob);
     }
 
+    // get coordinates
+    const coords = await getApproximateLocation({
+        street: data.street,
+        city: data.city,
+        state: data.state,
+        zipcode: data.zipcode,
+    });
+
     await Staffing.findByIdAndUpdate(id, {
         serviceType: data.serviceType,
         // status: data.status,
         caseId: data.caseId,
         location: {
-        city: data.city,
-        state: data.state,
-        zipcode: data.zipcode,
+            city: data.city,
+            state: data.state,
+            zipcode: data.zipcode,
+            coordinates: coords,
         },
         preferredSchedule: preferredSchedule,
         workload: {
