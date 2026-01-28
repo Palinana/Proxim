@@ -13,11 +13,17 @@ const StaffingSchema = new Schema(
             required: true,
             index: true,
         },
-        status: {
-            type: String,
-            enum: ["Open", "Pending", "Filled", "Closed"],
-            default: "open",
-            index: true,
+        // status: {
+        //     type: String,
+        //     enum: ["Open", "Pending", "Filled", "Closed"],
+        //     default: "open",
+        //     index: true,
+        // },
+          // Age range instead of DOB
+        ageRange: {
+            type: String, // e.g., "22-24 months"
+            required: true,
+            index: true
         },
         workload: {
             visits: {

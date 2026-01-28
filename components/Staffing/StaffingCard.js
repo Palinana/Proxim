@@ -13,7 +13,7 @@ function getServiceColor(type) {
 }
 
 export default function StaffingCard({ staffing }) {
-    const { serviceType, status, workload, location, preferredSchedule, caseId, coordinator } = staffing;
+    const { serviceType, ageRange, workload, location, preferredSchedule, caseId, coordinator } = staffing;
 
     const workloadText = workload
         ? `${workload.visits}x${workload.duration}/${workload.frequency}`
@@ -33,8 +33,9 @@ export default function StaffingCard({ staffing }) {
             </CardHeader>
 
             <CardContent className="pt-0 pb-3 px-4 space-y-1 text-sm">
-                <div><strong>Status:</strong> {status}</div>
+                {/* <div><strong>Status:</strong> {status}</div> */}
                 <div><strong>EI #:</strong> {caseId || "N/A"}</div>
+                <div><strong>Age:</strong> {ageRange} months</div>
 
                 <div>
                     <strong>Location:</strong> {location.city}, {location.state} {location.zipcode}

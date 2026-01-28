@@ -69,7 +69,7 @@ export default function FilterBar({ coordinators, role, userId }) {
             </Select>
 
             {/* Status */}
-            <Select
+            {/* <Select
                 value={searchParams.get("status") || ""}
                 onValueChange={(v) => setParam("status", v)}
             >
@@ -82,7 +82,7 @@ export default function FilterBar({ coordinators, role, userId }) {
                     <SelectItem value="filled" className="bg-white hover:bg-gray-50">Filled</SelectItem>
                     <SelectItem value="closed" className="bg-white hover:bg-gray-50">Closed</SelectItem>
                 </SelectContent>
-            </Select>
+            </Select> */}
 
             {/* Mandate */}
             <MultiSelectPopover

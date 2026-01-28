@@ -3,9 +3,9 @@
 import connectDB from "@/config/database";
 import Staffing from "@/models/Staffing";
 import { revalidatePath } from "next/cache";
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
+import { getAgeRange } from "@/utils/getAgeRange";
 
 export async function updateStaffing(id, formData) {
     await connectDB();
@@ -31,7 +31,7 @@ export async function updateStaffing(id, formData) {
 
     const data = Object.fromEntries(formData);
 
-    const workloadFreq = formData.get("workloadFreq") || data.workloadFreq;
+    // const workloadFreq = formData.get("workloadFreq") || data.workloadFreq;
 
     // preferredSchedule from form
     const preferredScheduleRaw = formData.getAll("preferredSchedule");
@@ -44,9 +44,15 @@ export async function updateStaffing(id, formData) {
         preferredSchedule.length = 0; // store empty array
     }
 
+    let ageRange = existingStaffing.ageRange;
+
+    if (data.dob) {
+        ageRange = getAgeRange(data.dob);
+    }
+
     await Staffing.findByIdAndUpdate(id, {
         serviceType: data.serviceType,
-        status: data.status,
+        // status: data.status,
         caseId: data.caseId,
         location: {
         city: data.city,
@@ -59,7 +65,7 @@ export async function updateStaffing(id, formData) {
             duration: Number(data.workloadDuration),
             frequency: data.workloadFreq || "Weekly",
         },
-        
+        ageRange
     });
 
     revalidatePath("/admin");

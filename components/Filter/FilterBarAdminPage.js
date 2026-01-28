@@ -75,7 +75,7 @@ export default function FilterBarAdminPage({ staffings = [], allStaffing = [], s
                 </Select>
 
                 {/* Status */}
-                <Select
+                {/* <Select
                   value={searchParams.get("status") || ""}
                   onValueChange={(v) => setParam("status", v)}
                 >
@@ -89,7 +89,7 @@ export default function FilterBarAdminPage({ staffings = [], allStaffing = [], s
                     <SelectItem value="Filled">Filled</SelectItem>
                     <SelectItem value="Closed">Closed</SelectItem>
                   </SelectContent>
-                </Select>
+                </Select> */}
 
                 {/* Mandate */}
                 <MultiSelectPopover
