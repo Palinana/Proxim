@@ -2,11 +2,11 @@
 
 import connectDB from "@/config/database";
 import Staffing from "@/models/Staffing";
-
 import { revalidatePath } from "next/cache";
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
+import { getAgeRange } from "@/utils/getAgeRange";
+import { getApproximateLocation } from "../../utils/getApproximateLocation";
 
 export async function addStaffing(formData) {
     await connectDB();
@@ -25,19 +25,35 @@ export async function addStaffing(formData) {
         preferredSchedule.length = 0;
     }
 
-  // set coordinator
+    // set coordinator
     const coordinatorId = session.user.role === "superadmin"
         ? data.coordinatorId // chosen by superadmin
         : session.user.id;   // admin creates own staffing
 
+    // define range for the age
+    const ageRange = getAgeRange(data.dob);
+
+    if (!data.dob) {
+        throw new Error("DOB is required to calculate age");
+    }      
+
+    // get coordinates
+    const coords = await getApproximateLocation({
+        street: data.street,
+        city: data.city,
+        state: data.state,
+        zipcode: data.zipcode,
+    });
+
     await Staffing.create({
         serviceType: data.serviceType,
-        status: data.status,
+        // status: data.status,
         caseId: data.caseId,
         location: {
             city: data.city,
             state: data.state,
             zipcode: data.zipcode,
+            coordinates: coords,
         },
         preferredSchedule,
         workload: {
@@ -46,6 +62,7 @@ export async function addStaffing(formData) {
             frequency: data.workloadFreq || "Weekly",
         },
         coordinator: coordinatorId,
+        ageRange
     });
 
     revalidatePath("/admin");

@@ -15,7 +15,7 @@ export default function StaffingList({ staffings = [], allStaffing = [], total =
           </div>
 
           <div className="bg-background py-3">
-                <FilterBarAdminPage coordinators={coordinators} showCoordinator={showCoordinator} staffings={staffings} allStaffing={allStaffing}/>
+              <FilterBarAdminPage coordinators={coordinators} showCoordinator={showCoordinator} staffings={staffings} allStaffing={allStaffing}/>
           </div>
 
           <div className="flex-1 overflow-y-auto space-y-3">

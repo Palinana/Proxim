@@ -19,7 +19,7 @@ export default async function SuperAdminStaffingPage({ searchParams }) {
     // ---- filters from URL ----
     const {
         service,
-        status,
+        age,
         borough,
         zip,
         mandate,
@@ -31,7 +31,8 @@ export default async function SuperAdminStaffingPage({ searchParams }) {
 
     if (ei) query.caseId = ei;
     if (service) query.serviceType = service;
-    if (status) query.status = status;
+    // if (status) query.status = status;
+    if (age) query.ageRange = age;
     if (borough) query["location.city"] = borough;
 
     if (zip) {

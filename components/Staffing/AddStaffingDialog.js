@@ -16,12 +16,13 @@ export default function AddStaffingDialog({ admins = [], isSuperadmin = false })
 
     // blank default values for new staffing
     const emptyStaffing = {
-      serviceType: "",
-      status: "",
-      caseId: "",
-      location: { city: "", state: "", zipcode: "" },
-      workload: { visits: "", duration: "", frequency: "Weekly" },
-      preferredSchedule: [],
+        serviceType: "",
+        //   status: "",
+        age: "",
+        caseId: "",
+        location: { city: "", state: "", zipcode: "" },
+        workload: { visits: "", duration: "", frequency: "Weekly" },
+        preferredSchedule: [],
     };
 
     return (

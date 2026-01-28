@@ -8,7 +8,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 export default function StaffingItem({ staffing, admins, isSuperadmin }) {
-    const { serviceType, status, workload, location, preferredSchedule, caseId, coordinator } = staffing;
+    const { serviceType, ageRange, workload, location, preferredSchedule, caseId, coordinator } = staffing;
 
     const workloadText = workload
         ? `${workload.visits}x${workload.duration}/${workload.frequency}`
@@ -48,14 +48,17 @@ export default function StaffingItem({ staffing, admins, isSuperadmin }) {
             </CardHeader>
 
             <CardContent className="pt-0 pb-3 px-4 space-y-1 text-sm">
-                <div>
+                {/* <div>
                     <strong>Status:</strong> {status}
-                </div>
+                </div> */}
                 <div>
                     <strong>Service:</strong> {serviceType}
                 </div>
                 <div>
                     <strong>Mandate:</strong> {workloadText}
+                </div>
+                <div>
+                    <strong>Age:</strong> {ageRange} months
                 </div>
                 <div>
                     <strong>Location:</strong> {location?.city}, {location?.state} {location?.zipcode}
