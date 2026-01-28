@@ -4,7 +4,7 @@ import User from "@/models/User";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
 
-import MapContainer from "../components/Map/MapContainer";
+import StaffingMap from "../components/Map/StaffingMap";
 import FilterBar from "../components/Filter/FilterBar";
 import StaffingPanel from "../components/Staffing/StaffingPanel";
 import MobileStaffingToggle from "@/components/Staffing/MobileStaffingToggle";
@@ -59,10 +59,28 @@ const Dashboard = async ({ searchParams }) => {
 
     const sort = params?.sort === "old" ? 1 : -1;
 
-    const staffings = await Staffing.find(query)
+    // const staffings = await Staffing.find(query)
+    //     .populate("coordinator", "first_name last_name email phone role")
+    //     .sort({ createdAt: sort })
+    //     .lean();
+    const staffingsRaw = await Staffing.find(query)
         .populate("coordinator", "first_name last_name email phone role")
         .sort({ createdAt: sort })
         .lean();
+
+    const staffings = staffingsRaw.map((s) => ({
+        ...s,
+        _id: s._id.toString(),
+        createdAt: s.createdAt?.toISOString(),
+        updatedAt: s.updatedAt?.toISOString(),
+        coordinator: s.coordinator
+            ? {
+                ...s.coordinator,
+                _id: s.coordinator._id.toString(),
+            }
+            : null,
+    }));
+
         
     const coordinators = await User.find({ role: "admin" })
         .select("first_name last_name _id")
@@ -85,7 +103,7 @@ const Dashboard = async ({ searchParams }) => {
                 </aside>
 
                 <section className="flex-1 relative bg-surface">
-                    <MapContainer staffings={staffings} />
+                    <StaffingMap staffings={staffings} />
 
                     <MobileStaffingToggle>
                         <StaffingPanel staffings={staffings} />
