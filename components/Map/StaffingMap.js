@@ -13,7 +13,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import Map, { Source, Layer } from "react-map-gl/mapbox";
+import Map, { Source, Layer, Popup } from "react-map-gl/mapbox";
 
 export default function StaffingMap({ staffings }) {
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -54,7 +54,6 @@ export default function StaffingMap({ staffings }) {
         id: "circle",
         type: "circle",
         paint: {
-            // "circle-radius": 80,
             "circle-radius": [
                 "interpolate",
                 ["linear"],
@@ -64,7 +63,6 @@ export default function StaffingMap({ staffings }) {
                 13,  14,
                 15,  22   // comfortable when zoomed in
             ],  
-            // "circle-color": "#7C3AED",
             "circle-color": [
                 "match",
                 ["get", "serviceType"],
@@ -75,10 +73,6 @@ export default function StaffingMap({ staffings }) {
                 "ABA", "#EF4444", // bg-service-ABA
                 "#9CA3AF"         // default gray
             ],  
-            // "circle-opacity": 0.18,
-            // "circle-stroke-color": "#7C3AED",
-            // "circle-stroke-width": 2,
-            // "circle-stroke-opacity": 0.7,
             "circle-opacity": 0.45,
             "circle-stroke-width": 1,
             "circle-stroke-color": "#111827",
@@ -108,44 +102,49 @@ export default function StaffingMap({ staffings }) {
                 style={{ width: "100%", height: "100%" }}
                 mapStyle="mapbox://styles/mapbox/streets-v11"
                 mapboxAccessToken={token}
-                interactiveLayerIds={["circle"]} // 👈 important
-                onMouseEnter={() => {
-                    document.body.style.cursor = "pointer";
-                }}
+                interactiveLayerIds={["circle"]}
                 onMouseMove={(e) => {
-                    if (!e.features?.length) return;
+                    if (!e.features?.length) {
+                        setHoverInfo(null);
+                        return;
+                    }
+
                     const feature = e.features[0];
-                  
+
                     setHoverInfo({
-                      longitude: e.lngLat.lng,
-                      latitude: e.lngLat.lat,
-                      title: feature.properties.title,
+                        id: feature.properties.id,
+                        longitude: e.lngLat.lng,
+                        latitude: e.lngLat.lat,
+                        title: feature.properties.title,
                     });
                 }}
-                  
+                onMouseEnter={() => {
+                    document.body.style.cursor = "default";
+                }}
                 onMouseLeave={() => {
                     setHoverInfo(null);
-                    document.body.style.cursor = "";
+                    document.body.style.cursor = "default";
                 }}  
-            >
+                >
                 <Source id="points" type="geojson" data={geojson}>
+                    <Layer {...circleLayer} />
+                    {hoverInfo && <Layer {...hoverLayer} />}
+                </Source>
 
                 {hoverInfo && (
-                    <div
-                        className="absolute bg-white px-2 py-1 rounded shadow text-xs pointer-events-none"
-                        style={{
-                        left: "50%",
-                        top: "10px",
-                        transform: "translateX(-50%)",
-                        }}
+                    <Popup
+                        longitude={hoverInfo.longitude}
+                        latitude={hoverInfo.latitude}
+                        closeButton={false}
+                        closeOnClick={false}
+                        anchor="top"
+                        offset={[0, -8]}
                     >
-                        {hoverInfo.title}
-                    </div>
+                        <div className="text-xs font-medium">
+                            {hoverInfo.title}
+                        </div>
+                    </Popup>
                 )}
-                <Layer {...circleLayer} />
-                    {hoverInfo && <Layer {...hoverLayer} />}
-
-                </Source>
             </Map>
         </div>
     );
