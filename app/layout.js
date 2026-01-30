@@ -2,7 +2,6 @@
 
 import React from 'react';
 import '@/assets/styles/globals.css';
-import "mapbox-gl/dist/mapbox-gl.css";
 import { SessionProvider } from "next-auth/react";
 import AuthProvider from '../components/Auth/AuthProvider';
 import Navbar from '../components/Navigation/Navbar';
