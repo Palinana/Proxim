@@ -4,6 +4,7 @@ import User from "@/models/User";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
 
+import DashboardClient from "../components/Dashboard/DashboardClient";
 import StaffingMap from "../components/Map/StaffingMap";
 import FilterBar from "../components/Filter/FilterBar";
 import StaffingPanel from "../components/Staffing/StaffingPanel";
@@ -59,10 +60,6 @@ const Dashboard = async ({ searchParams }) => {
 
     const sort = params?.sort === "old" ? 1 : -1;
 
-    // const staffings = await Staffing.find(query)
-    //     .populate("coordinator", "first_name last_name email phone role")
-    //     .sort({ createdAt: sort })
-    //     .lean();
     const staffingsRaw = await Staffing.find(query)
         .populate("coordinator", "first_name last_name email phone role")
         .sort({ createdAt: sort })
@@ -97,19 +94,8 @@ const Dashboard = async ({ searchParams }) => {
                 <FilterBar coordinators={coordinatorOptions} role={role} userId={userId}/>
             </div>
 
-            <div className="flex flex-1 overflow-hidden bg-card">
-                <aside className="hidden md:block w-[420px] lg:w-[480px] border-r border-default overflow-y-auto pl-6 md:pl-8 pr-0">
-                    <StaffingPanel staffings={staffings} />
-                </aside>
+            <DashboardClient staffings={staffings} />
 
-                <section className="flex-1 relative bg-surface">
-                    <StaffingMap staffings={staffings} />
-
-                    <MobileStaffingToggle>
-                        <StaffingPanel staffings={staffings} />
-                    </MobileStaffingToggle>
-                </section>
-            </div>
         </div>
     );
 };
