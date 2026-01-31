@@ -43,10 +43,9 @@ export default function StaffingCard({ staffing, isSelected, onSelect }) {
             onClick={onSelect}
             className={`
                 w-full bg-staffing-card border-default cursor-pointer transition
-                ${isSelected
-                    ? "border-blue-500 ring-2 ring-blue-400 bg-blue-50"
-                    : "hover:bg-muted"}
+                ${isSelected ? "selected-card-dashboard" : "hover:bg-muted"}
             `}
+            
         >
             <CardHeader className="flex items-start justify-between py-3 px-4">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">

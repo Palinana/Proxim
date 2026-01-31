@@ -117,10 +117,10 @@ export default function StaffingMap({ staffings, selectedStaffingId, onSelectSta
                 13, 24,
                 15, 34,
         ],
-        "circle-color": "#F59E0B",   // yellow highlight
+        "circle-color": "#88CE26",   // highlight
         "circle-opacity": 0.65,
         "circle-stroke-width": 2,
-        "circle-stroke-color": "#fbbf24",
+        "circle-stroke-color": "#88CE26",
         },
     };
 
