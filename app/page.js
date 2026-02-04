@@ -77,7 +77,6 @@ const Dashboard = async ({ searchParams }) => {
             }
             : null,
     }));
-
         
     const coordinators = await User.find({ role: "admin" })
         .select("first_name last_name _id")
@@ -90,12 +89,11 @@ const Dashboard = async ({ searchParams }) => {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="border-b bg-background px-6 md:px-8 py-3">
+            <div className="border-b border-default bg-background px-6 md:px-8 py-5">
                 <FilterBar coordinators={coordinatorOptions} role={role} userId={userId}/>
             </div>
 
             <DashboardClient staffings={staffings} />
-
         </div>
     );
 };

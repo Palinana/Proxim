@@ -27,16 +27,18 @@
 
     --color-text-secondary-2: #3288b6;
     --color-text-secondary-2-hover: #266c91;
+
+    --color-text-tertiary: #88CE26;
   
     --color-border: #e2e8f0;
 
     --color-service-OT: #8699F6;
-    --color-service-PT: #71BD85;
+    --color-service-PT: #068a58;
     --color-service-ST: #DA6736;
     --color-service-SI: #E276BE;
     --color-service-ABA: #F7DC4E;
 }
-  
+
 /* Global background + text */
 body {
     background-color: var(--color-bg);
@@ -50,7 +52,7 @@ body {
     }
 
     .bg-surface {
-        background-color: var(--color-surface);
+        background-color: var(--color-surface) !important;
     }
 
     .bg-primary {
@@ -96,6 +98,15 @@ body {
         background-color: var(--color-service-ABA);
     }
 
+    .mobile-staffing-panel {
+        background-color: #ffffff !important;
+        padding-bottom: 14px; /* height of footer */
+    }
+      
+    .mobile-staffing-panel .sticky {
+        background-color: #ffffff !important;
+    }    
+    
     
     /* Text colors */
     .text-primary {
@@ -118,6 +129,10 @@ body {
         color: var(--color-text-secondary-2-hover);
     }
 
+    .text-tertrietry {
+        color: var(--color-text-tertiary);
+    }
+
     .text-muted {
         color: #718096;
     }
@@ -125,6 +140,15 @@ body {
     .text-default {
         color: var(--color-text);
     }
+
+    .popup-highlight {
+        color: black;
+    }
+      
+    .popup-highlight:hover {
+        color: var(--color-text-secondary-2)
+    }
+      
   
     /* Buttons (without @apply) */
     .btn-primary {

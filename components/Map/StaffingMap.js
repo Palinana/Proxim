@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import Map, { Source, Layer, Popup } from "react-map-gl/mapbox";
+import Map, { Source, Layer, Popup, NavigationControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 export default function StaffingMap({ staffings, selectedStaffingId, onSelectStaffing }) {
@@ -22,14 +22,13 @@ export default function StaffingMap({ staffings, selectedStaffingId, onSelectSta
                 const key = `${lat}-${lng}`;
 
                 if (!groups[key]) {
-                    console.log("serviceType", s.serviceType)
-                groups[key] = { lat, lng, items: [], serviceType: s.serviceType };
+                    groups[key] = { lat, lng, items: [], serviceType: s.serviceType };
                 }
 
                 groups[key].items.push({
-                id: s._id || `${key}-${idx}`,
-                serviceType: s.serviceType,
-                workloadText: `${s.workload.visits}x${s.workload.duration}/${s.workload.frequency}`,
+                    id: s._id || `${key}-${idx}`,
+                    serviceType: s.serviceType,
+                    workloadText: `${s.workload.visits}x${s.workload.duration}/${s.workload.frequency}`,
                 });
             });
 
@@ -66,11 +65,22 @@ export default function StaffingMap({ staffings, selectedStaffingId, onSelectSta
         [features]
     );
 
+    // No results found - default map
     if (!features.length) {
         return (
-            <div className="p-4 text-sm text-gray-500">No map data available</div>
+            <Map
+                initialViewState={{
+                    longitude: -74.087,
+                    latitude: 40.5795,
+                    zoom: 11,
+                }}
+              
+                style={{ width: "100%", height: "100%" }}
+                mapStyle="mapbox://styles/mapbox/light-v10"
+                mapboxAccessToken={token}
+            />
         );
-    }
+    }      
 
     const circleLayer = {
         id: "circle",
@@ -88,8 +98,8 @@ export default function StaffingMap({ staffings, selectedStaffingId, onSelectSta
             "circle-color": [
                 "match",
                 ["get", "serviceType"],
-                "OT", "#8699F6",  // bg-service-OT
-                "PT", "#71BD85",  // bg-service-PT
+                "OT", "#4081D6",  // bg-service-OT
+                "PT", "#068a58",  // bg-service-PT
                 "ST", "#DA6736",  // bg-service-ST
                 "SI", "#E276BE",  // bg-service-SI
                 "ABA", "#F7DC4E", // bg-service-ABA
@@ -125,7 +135,8 @@ export default function StaffingMap({ staffings, selectedStaffingId, onSelectSta
     };
 
     return (
-        <div className="absolute inset-0">
+        // <div className="absolute inset-0">
+        <div className="w-full h-full min-h-0">
             <Map
                 initialViewState={{
                     longitude: features[0].geometry.coordinates[0],
@@ -134,6 +145,8 @@ export default function StaffingMap({ staffings, selectedStaffingId, onSelectSta
                 }}
                 style={{ width: "100%", height: "100%" }}
                 mapStyle="mapbox://styles/mapbox/light-v10"
+                // mapStyle="mapbox://styles/palina/cml19ex6e00ha01qreais9dqn"
+
                 mapboxAccessToken={token}
                 interactiveLayerIds={["circle"]}
                 onMouseMove={(e) => {
@@ -159,13 +172,33 @@ export default function StaffingMap({ staffings, selectedStaffingId, onSelectSta
                 onMouseLeave={() => {
                 setHoverInfo(null);
                 }}
+                // Click the map background to clear selection
+                onClick={(e) => {
+                    const feature = e.features?.[0];
+                
+                    if (!feature) {
+                      onSelectStaffing(null);
+                      return;
+                    }
+                
+                    const staffingIds = JSON.parse(feature.properties.staffingIds);
+                    const id = staffingIds[0];
+                
+                    onSelectStaffing(selectedStaffingId === id ? null : id);
+                }}
+                // custom water color 
+                onLoad={(e) => {
+                    const map = e.target;
+                    map.setPaintProperty("water", "fill-color", "#c7dee8");
+                }}
             >
-
+                <NavigationControl position="bottom-right" />
+                
                 <Source id="points" type="geojson" data={geojson}>
                     <Layer {...circleLayer} />
                     {selectedGroupId && <Layer {...selectedLayer} />}
                 </Source>
-
+  
                 {hoverInfo && (
                     <Popup
                         longitude={hoverInfo.longitude}
@@ -178,11 +211,11 @@ export default function StaffingMap({ staffings, selectedStaffingId, onSelectSta
                         <div className="text-xs font-medium">
                             {hoverInfo.items.map((item, idx) => (
                                 <div
-                                key={`${item.id}-${idx}`}
-                                className="cursor-pointer hover:text-blue-600"
-                                onClick={() => onSelectStaffing(item.id)}
+                                    key={`${item.id}-${idx}`}
+                                    className="cursor-pointer popup-highlight"
+                                    onClick={() => onSelectStaffing(item.id)}
                                 >
-                                {item.serviceType} - {item.workloadText} – approximate location
+                                    {item.serviceType} - {item.workloadText} – approximate location
                                 </div>
                             ))}
                         </div>
