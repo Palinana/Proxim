@@ -1,3 +1,5 @@
+"use client"; 
+import React, { useRef, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
@@ -12,7 +14,9 @@ function getServiceColor(type) {
     }
 }
 
-export default function StaffingCard({ staffing }) {
+export default function StaffingCard({ staffing, isSelected, onSelect }) {
+    const ref = useRef(null);
+
     const { serviceType, ageRange, workload, location, preferredSchedule, caseId, coordinator } = staffing;
 
     const workloadText = workload
@@ -22,9 +26,27 @@ export default function StaffingCard({ staffing }) {
     const coordName = coordinator
         ? `${coordinator.first_name} ${coordinator.last_name}`
         : "Unknown";
+    
+    // Auto-scroll when selected
+    useEffect(() => {
+        if (isSelected) {
+            ref.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+        }
+    }, [isSelected]);
 
     return (
-        <Card className="w-full border-default bg-staffing-card">
+        <Card
+            ref={ref}
+            onClick={onSelect}
+            className={`
+                w-full bg-staffing-card border-default cursor-pointer transition
+                ${isSelected ? "selected-card-dashboard" : "hover:bg-muted"}
+            `}
+            
+        >
             <CardHeader className="flex items-start justify-between py-3 px-4">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                     <span className={`h-3 w-3 rounded-full ${getServiceColor(serviceType)}`} />

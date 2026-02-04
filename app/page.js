@@ -4,7 +4,8 @@ import User from "@/models/User";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
 
-import MapContainer from "../components/Map/MapContainer";
+import DashboardClient from "../components/Dashboard/DashboardClient";
+import StaffingMap from "../components/Map/StaffingMap";
 import FilterBar from "../components/Filter/FilterBar";
 import StaffingPanel from "../components/Staffing/StaffingPanel";
 import MobileStaffingToggle from "@/components/Staffing/MobileStaffingToggle";
@@ -59,10 +60,23 @@ const Dashboard = async ({ searchParams }) => {
 
     const sort = params?.sort === "old" ? 1 : -1;
 
-    const staffings = await Staffing.find(query)
+    const staffingsRaw = await Staffing.find(query)
         .populate("coordinator", "first_name last_name email phone role")
         .sort({ createdAt: sort })
         .lean();
+
+    const staffings = staffingsRaw.map((s) => ({
+        ...s,
+        _id: s._id.toString(),
+        createdAt: s.createdAt?.toISOString(),
+        updatedAt: s.updatedAt?.toISOString(),
+        coordinator: s.coordinator
+            ? {
+                ...s.coordinator,
+                _id: s.coordinator._id.toString(),
+            }
+            : null,
+    }));
         
     const coordinators = await User.find({ role: "admin" })
         .select("first_name last_name _id")
@@ -75,23 +89,11 @@ const Dashboard = async ({ searchParams }) => {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="border-b bg-background px-6 md:px-8 py-3">
+            <div className="border-b border-default bg-background px-6 md:px-8 py-5">
                 <FilterBar coordinators={coordinatorOptions} role={role} userId={userId}/>
             </div>
 
-            <div className="flex flex-1 overflow-hidden bg-card">
-                <aside className="hidden md:block w-[420px] lg:w-[480px] border-r border-default overflow-y-auto pl-6 md:pl-8 pr-0">
-                    <StaffingPanel staffings={staffings} />
-                </aside>
-
-                <section className="flex-1 relative bg-surface">
-                    <MapContainer staffings={staffings} />
-
-                    <MobileStaffingToggle>
-                        <StaffingPanel staffings={staffings} />
-                    </MobileStaffingToggle>
-                </section>
-            </div>
+            <DashboardClient staffings={staffings} />
         </div>
     );
 };

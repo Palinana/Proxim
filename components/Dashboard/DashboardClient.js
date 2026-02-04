@@ -1,0 +1,56 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import StaffingMap from "../Map/StaffingMap";
+import StaffingPanel from "../Staffing/StaffingPanel";
+import MobileStaffingToggle from "@/components/Staffing/MobileStaffingToggle";
+
+export default function DashboardClient({ staffings }) {
+    const [selectedStaffingId, setSelectedStaffingId] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const selectedStaffing = useMemo(
+        () => staffings.find(s => s._id === selectedStaffingId),
+        [staffings, selectedStaffingId]
+    );
+
+    return (
+        <div className="flex flex-1 h-full overflow-hidden bg-card">
+            {/* Desktop sidebar */}
+            <aside className="hidden md:block w-[420px] lg:w-[480px] border-r border-default overflow-y-auto">
+                <StaffingPanel
+                    staffings={staffings}
+                    selectedStaffingId={selectedStaffingId}
+                    onSelectStaffing={setSelectedStaffingId}
+                />
+            </aside>
+    
+            {/* Map */}
+            <section className="flex-1 relative pb-16 md:pb-0">
+                <StaffingMap
+                    staffings={staffings}
+                    selectedStaffingId={selectedStaffingId}
+                    onSelectStaffing={setSelectedStaffingId}
+                />
+
+                <MobileStaffingToggle open={open} setOpen={setOpen}>
+                    <StaffingPanel
+                        staffings={staffings}
+                        selectedStaffingId={selectedStaffingId}
+                        onSelectStaffing={setSelectedStaffingId}
+                    />
+                </MobileStaffingToggle>
+
+                {/* MOBILE BUTTON */}
+                <div className="md:hidden absolute inset-x-0 bottom-0 h-16 flex items-center justify-center pointer-events-none">
+                    <button
+                        className="pointer-events-auto px-4 py-2 rounded-lg bg-primary text-white shadow"
+                        onClick={() => setOpen(!open)}
+                    >
+                        {open ? "Hide staffing" : "Show staffing"}
+                    </button>
+                </div>
+            </section>
+        </div>
+    );
+}

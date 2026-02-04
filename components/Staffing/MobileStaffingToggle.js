@@ -1,30 +1,17 @@
 "use client";
 
-import { useState } from "react";
-
-const MobileStaffingToggle = ({ children }) => {
-    const [open, setOpen] = useState(false);
-
+export default function MobileStaffingToggle({ open, setOpen, children }) {
     return (
-        <>
-            {/* Button */}
-            <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
-                <button
-                    onClick={() => setOpen(!open)}
-                    className="px-4 py-2 rounded bg-primary text-white shadow"
-                >
-                    {open ? "Hide Staffings" : "Show Staffings"}
-                </button>
-            </div>
-
-            {/* Panel */}
+        <div className="md:hidden w-full">
             {open && (
-                <div className="md:hidden absolute bottom-16 left-0 right-0 max-h-[60vh] overflow-y-auto bg-surface border-t border-default z-10">
-                    {children}
+                <div className="absolute inset-x-0 bottom-16 z-40">
+                    <div className="mobile-staffing-panel border-t border-default bg-white h-[35vh] flex flex-col">
+                        <div className="flex-1 overflow-y-auto">
+                            {children}
+                        </div>
+                    </div>
                 </div>
             )}
-        </>
+        </div>
     );
-};
-
-export default MobileStaffingToggle;
+}
